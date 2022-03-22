@@ -80,7 +80,7 @@ def start():
 
     # print a message on the console when the game is over
     print("Game over")
-
+    print("ask")
 
 # Function for creating random shaped tetrominoes to enter the game grid
 def create_tetromino(grid_height, grid_width):
