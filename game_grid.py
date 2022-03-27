@@ -121,4 +121,4 @@ class GameGrid:
 # print text score.     ------------It Will Be Updated--------------
 def print_score(score):
     stddraw.setPenColor(stddraw.GRAY)
-    stddraw.boldText(12.8, 19, score)
+    stddraw.boldText(13, 19, score)

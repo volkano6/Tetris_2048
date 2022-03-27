@@ -139,8 +139,7 @@ class Tetromino:
                     if position.y < self.grid_height:
                         self.tile_matrix[row][col].draw(position)
 
-                        # Method for moving the tetromino in a given direction by 1 on the game grid
-
+    # Method for moving the tetromino in a given direction by 1 on the game grid
     def move(self, direction, game_grid):
         # check if the tetromino can be moved in the given direction by using the
         # can_be_moved method defined below

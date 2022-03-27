@@ -14,10 +14,10 @@ def start():
     # set the dimensions of the game grid
     grid_h, grid_w = 20, 12
     # set the size of the drawing canvas
-    canvas_h, canvas_w = 30 * grid_h, 35 * grid_w
+    canvas_h, canvas_w = 35 * grid_h, 45 * grid_w
     stddraw.setCanvasSize(canvas_w, canvas_h)
     # set the scale of the coordinate system
-    stddraw.setXscale(-0.5, grid_w + 2)
+    stddraw.setXscale(-0.5, grid_w + 2.5)
     stddraw.setYscale(-0.5, grid_h - 0.5)
 
     # set the dimension values stored and used in the Tetromino class
@@ -32,10 +32,9 @@ def start():
     current_tetromino = create_tetromino(grid_h, grid_w)
     grid.current_tetromino = current_tetromino
 
-
     # display a simple menu before opening the game
     # by using the display_game_menu function defined below
-    # display_game_menu(grid_h, grid_w)
+    # display_game_menu(grid_h, grid_w + 3)
 
     # the main game loop (keyboard interaction for moving the tetromino)
     while True:
@@ -55,6 +54,15 @@ def start():
                 # move the active tetromino down by one
                 # (soft drop: causes the tetromino to fall down faster)
                 current_tetromino.move(key_typed, grid)
+            # clear the queue of the pressed keys for a smoother interaction
+            elif key_typed == "ctrl":
+                # move the active tetromino down to deepest
+                # (drop: causes the tetromino to fall to the deepest place )
+                pass
+            elif key_typed == "up":
+                # move the active tetromino down to deepest
+                # (drop: causes the tetromino to fall to the deepest place )
+                pass
             # clear the queue of the pressed keys for a smoother interaction
             stddraw.clearKeysTyped()
 
@@ -81,6 +89,7 @@ def start():
 
     # print a message on the console when the game is over
     print("Game over")
+
 
 # Function for creating random shaped tetrominoes to enter the game grid
 def create_tetromino(grid_height, grid_width):
@@ -112,9 +121,9 @@ def display_game_menu(grid_height, grid_width):
     # display the image
     stddraw.picture(image_to_display, img_center_x, img_center_y)
     # dimensions of the start game button
-    button_w, button_h = grid_width - 1.5, 2
+    button_w, button_h = grid_width - 7, 1.7
     # coordinates of the bottom left corner of the start game button
-    button_blc_x, button_blc_y = img_center_x - button_w / 2, 4
+    button_blc_x, button_blc_y = img_center_x - button_w / 2, 4.1
     # display the start game button as a filled rectangle
     stddraw.setPenColor(button_color)
     stddraw.filledRectangle(button_blc_x, button_blc_y, button_w, button_h)
