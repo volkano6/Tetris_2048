@@ -54,13 +54,16 @@ def start():
                 # move the active tetromino down by one
                 # (soft drop: causes the tetromino to fall down faster)
                 current_tetromino.move(key_typed, grid)
+            elif key_typed == "up":
+                # move the active tetromino's rotate change
+                current_tetromino.rotate("up", grid, True)
             # clear the queue of the pressed keys for a smoother interaction
             elif key_typed == "ctrl":
                 # move the active tetromino down to deepest
-                # (drop: causes the tetromino to fall to the deepest place )
+                #
                 pass
-            elif key_typed == "up":
-                # move the active tetromino down to deepest
+            elif key_typed == "space":
+                # move the active tetromino drop
                 # (drop: causes the tetromino to fall to the deepest place )
                 pass
             # clear the queue of the pressed keys for a smoother interaction

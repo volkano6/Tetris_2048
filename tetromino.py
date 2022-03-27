@@ -1,3 +1,5 @@
+
+
 from tile import Tile  # used for modeling each tile on the tetromino
 from point import Point  # used for tile positions
 import copy as cp  # the copy module is used for copying tiles and positions
@@ -211,3 +213,23 @@ class Tetromino:
                             return False
                         break  # end the inner for loop
         return True  # tetromino can be moved in the given direction
+
+
+    def rotate(self, key_typed, game_grid, clock_direction=True):
+        if clock_direction == True:
+            if self.type == 'I':
+                tiles, pos = game_grid.current_tetromino.get_min_bounded_tile_matrix(True)
+
+            elif self.type == 'O':
+                pass
+            elif self.type == 'Z':
+                pass
+            elif self.type == 'S':
+                pass
+            elif self.type == 'T':
+                pass
+            elif self.type == 'L':
+                pass
+            elif self.type == 'J':
+                pass
+
