@@ -1,6 +1,6 @@
 import lib.stddraw as stddraw  # stddraw is used as a basic graphics library
 from lib.color import Color  # used for coloring the tile and the number on it
-
+import random
 
 # Class used for modeling numbered tiles as in 2048
 class Tile:
@@ -13,12 +13,24 @@ class Tile:
 
     # Constructor that creates a tile with 2 as the number on it
     def __init__(self):
-        # set the number on the tile
-        self.number = 2
-        # set the colors of the tile
-        self.background_color = Color(151, 178, 199)  # background (tile) color
-        self.foreground_color = Color(0, 100, 200)  # foreground (number) color
-        self.box_color = Color(0, 100, 200)  # box (boundary) color
+        random_list = [2, 4]
+        x = random.choice(random_list)
+
+        if x == 2:
+            # set the number on the tile
+            self.number = 2
+            # set the colors of the tile
+            self.background_color = Color(151, 178, 199)  # background (tile) color
+            self.foreground_color = Color(0, 100, 200)  # foreground (number) color
+            self.box_color = Color(0, 100, 200)  # box (boundary) color
+
+        else:
+            # set the number on the tile
+            self.number = 4
+            # set the colors of the tile
+            self.background_color = Color(151, 178, 199)  # background (tile) color
+            self.foreground_color = Color(0, 100, 200)  # foreground (number) color
+            self.box_color = Color(0, 100, 200)  # box (boundary) color
 
     # Method for drawing the tile
     def draw(self, position, length=1):

@@ -32,9 +32,10 @@ def start():
     current_tetromino = create_tetromino(grid_h, grid_w)
     grid.current_tetromino = current_tetromino
 
+
     # display a simple menu before opening the game
     # by using the display_game_menu function defined below
-    #display_game_menu(grid_h, grid_w)
+    # display_game_menu(grid_h, grid_w)
 
     # the main game loop (keyboard interaction for moving the tetromino)
     while True:

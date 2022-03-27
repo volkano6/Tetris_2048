@@ -13,7 +13,7 @@ class GameGrid:
         self.grid_width = grid_w
         # create a tile matrix to store the tiles landed onto the game grid
         self.tile_matrix = np.full((grid_h, grid_w), None)
-        # create the tetromino that is currently being moved on the game grid
+        # create the te1tromino that is currently being moved on the game grid
         self.current_tetromino = None
         # the game_over flag shows whether the game is over or not
         self.game_over = False
@@ -36,6 +36,7 @@ class GameGrid:
         # game grid is updated)
         if self.current_tetromino is not None:
             self.current_tetromino.draw()
+        print_score("SCORE")
         # draw a box around the game grid
         self.draw_boundaries()
         # show the resulting drawing with a pause duration = 250 ms
@@ -115,3 +116,9 @@ class GameGrid:
                         self.game_over = True
         # return the game_over flag
         return self.game_over
+
+
+# print text score.     ------------It Will Be Updated--------------
+def print_score(score):
+    stddraw.setPenColor(stddraw.GRAY)
+    stddraw.boldText(12.8, 19, score)
