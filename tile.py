@@ -20,17 +20,17 @@ class Tile:
             # set the number on the tile
             self.number = 2
             # set the colors of the tile
-            self.background_color = Color(151, 178, 199)  # background (tile) color
-            self.foreground_color = Color(0, 100, 200)  # foreground (number) color
-            self.box_color = Color(0, 100, 200)  # box (boundary) color
+            self.background_color = Color(50, 100, 220)  # background (tile) color
+            self.foreground_color = Color(0, 0, 128)  # foreground (number) color
+            self.box_color = Color(0, 0, 128)  # box (boundary) color
 
         else:
             # set the number on the tile
             self.number = 4
             # set the colors of the tile
-            self.background_color = Color(151, 178, 199)  # background (tile) color
-            self.foreground_color = Color(0, 100, 200)  # foreground (number) color
-            self.box_color = Color(0, 100, 200)  # box (boundary) color
+            self.background_color = Color(100, 190, 200)  # background (tile) color
+            self.foreground_color = Color(0, 0, 128)  # foreground (number) color
+            self.box_color = Color(0, 0, 128)  # box (boundary) color
 
     # Method for drawing the tile
     def draw(self, position, length=1):
