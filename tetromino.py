@@ -94,7 +94,7 @@ class Tetromino:
 
     # Method that returns a copy of tile_matrix omitting empty rows and columns
     # and the position of the bottom left cell when return_position is set
-    def get_min_bounded_tile_matrix(self, return_position=False):
+    def get_min_bounded_tile_matrix(self, return_position= False):
         n = len(self.tile_matrix)  # n = number of rows = number of columns
         # determine rows and columns to copy (omit empty rows and columns)
         min_row, max_row, min_col, max_col = n - 1, 0, n - 1, 0

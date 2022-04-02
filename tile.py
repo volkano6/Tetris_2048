@@ -10,7 +10,7 @@ class Tile:
     # the value of the boundary thickness (for the boxes around the tiles)
     boundary_thickness = 0.004
     # font family and size used for displaying the tile number
-    font_family, font_size = "Arial", 14
+    font_family, font_size = "Arial", 15
 
     # Constructor that creates a tile with 2 as the number on it
     def __init__(self):

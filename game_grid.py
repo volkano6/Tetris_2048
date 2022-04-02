@@ -1,7 +1,10 @@
 import lib.stddraw as stddraw  # stddraw is used as a basic graphics library
+import tetromino
+
 from lib.color import Color  # used for coloring the game grid
 from point import Point  # used for tile positions
 import numpy as np  # fundamental Python module for scientific computing
+
 
 
 # Class used for modelling the game grid
@@ -37,6 +40,7 @@ class GameGrid:
         if self.current_tetromino is not None:
             self.current_tetromino.draw()
         print_score("SCORE")
+        show_next("NEXT")
         # draw a box around the game grid
         self.draw_boundaries()
         # show the resulting drawing with a pause duration = 250 ms
@@ -122,3 +126,12 @@ class GameGrid:
 def print_score(score):
     stddraw.setPenColor(stddraw.GRAY)
     stddraw.boldText(13, 19, score)
+
+
+def show_next(next):
+    stddraw.boldText(13, 4, next)
+
+
+
+
+
