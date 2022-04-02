@@ -30,7 +30,7 @@ def start():
     # create the first tetromino to enter the game grid
     # by using the create_tetromino function defined below
     current_tetromino = create_tetromino(grid_h, grid_w)
-    grid.current_tetromino = current_tetromino
+    grid.current_tetromino = current_tetromino   # for ex : as <tetromino.Tetromino object at 0x000001A3EA751540>
 
     # display a simple menu before opening    game
     # by using the display_game_menu function defined below
@@ -56,11 +56,10 @@ def start():
                 current_tetromino.move(key_typed, grid)
             elif key_typed == "up":
                 # move the active tetromino's rotate change
-                current_tetromino.rotate_tertromino("up", grid, True)
+                grid.current_tetromino.rotate_tertromino("up", grid, clock_direction = True)
             # clear the queue of the pressed keys for a smoother interaction
             elif key_typed == "ctrl":
                 # move the active tetromino down to deepest
-                #
                 pass
             elif key_typed == "space":
                 # move the active tetromino drop

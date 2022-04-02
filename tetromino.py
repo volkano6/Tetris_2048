@@ -34,10 +34,10 @@ class Tetromino:
         elif type == 'Z':
             n = 3  # n = number of rows = number of columns in the tile matrix
             # shape of the tetromino Z in its initial orientation
-            occupied_tiles.append((0, 1))  # (column_index, row_index)
+            occupied_tiles.append((0, 0))  # (column_index, row_index)
+            occupied_tiles.append((1, 0))
             occupied_tiles.append((1, 1))
-            occupied_tiles.append((1, 2))
-            occupied_tiles.append((2, 2))
+            occupied_tiles.append((2, 1))
         elif type == 'S':
             n = 3  # n = number of rows = number of columns in the tile matrix
             # shape of the tetromino S in its initial orientation
@@ -213,40 +213,27 @@ class Tetromino:
         return True  # tetromino can be moved in the given direction
 
     def rotate_tertromino(self, key_typed, game_grid, clock_direction=True):
-        if clock_direction:
-            if self.type == 'I':
-                tiles, pos = game_grid.current_tetromino.get_min_bounded_tile_matrix(True)
-                print(tiles)
-                print(pos)
-            else:
-                tiles, pos = game_grid.current_tetromino.get_min_bounded_tile_matrix(True)
-                print(tiles)
-                print(pos)
 
-            # elif self.type == 'Z':
-            #     tiles, pos = game_grid.current_tetromino.get_min_bounded_tile_matrix(True)
-            #     print(tiles)
-            #     print(pos)
-            # elif self.type == 'S':
-            #     tiles, pos = game_grid.current_tetromino.get_min_bounded_tile_matrix(True)
-            #     print(tiles)
-            #     print(pos)
-            # elif self.type == 'T':
-            #     tiles, pos = game_grid.current_tetromino.get_min_bounded_tile_matrix(True)
-            #     print(tiles)
-            #     print(pos)
-            # elif self.type == 'L':
-            #     tiles, pos = game_grid.current_tetromino.get_min_bounded_tile_matrix(True)
-            #     print(tiles)
-            #     new_current_tetromino = tiles
-            #     new_current_tetromino[0][0] = tiles[2][1]
-            #     print(new_current_tetromino)
-            #     # new_current_tetromino[0][0] = tiles[0][0]
-            #     return new_current_tetromino
-            #
-            # elif self.type == 'J':
-            #     tiles, pos = game_grid.current_tetromino.get_min_bounded_tile_matrix(True)
-            #     print(tiles)
-            #     print(pos)
-        else:
+        if not (self.can_be_rotate()):
             pass
+
+        if clock_direction:
+
+            # Function flips the entries in each column in the up or down direction.
+            flip_matrix = np.flipud(self.tile_matrix)
+            # The numpy.transpose() function changes the row elements into column elements
+            # and the column elements into row elements.
+            transpose_matrix = np.transpose(flip_matrix)
+            self.tile_matrix = transpose_matrix
+
+        else:
+
+            # The numpy.transpose() function changes the row elements into column elements
+            # and the column elements into row elements.
+            transpose_matrix = np.transpose(self.tile_matrix)
+            # Function flips the entries in each column in the up or down direction.
+            flip_matrix = np.flipud(transpose_matrix)
+            self.tile_matrix = flip_matrix
+
+    def can_be_rotate(self):
+        pass
