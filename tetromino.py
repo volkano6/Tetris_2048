@@ -1,10 +1,9 @@
-
-
 from tile import Tile  # used for modeling each tile on the tetromino
 from point import Point  # used for tile positions
 import copy as cp  # the copy module is used for copying tiles and positions
 import random  # module for generating random values/permutations
 import numpy as np  # the fundamental Python module for scientific computing
+import math
 
 
 # Class used for modeling tetrominoes with 3 out of 7 different types/shapes
@@ -214,22 +213,43 @@ class Tetromino:
                         break  # end the inner for loop
         return True  # tetromino can be moved in the given direction
 
-
-    def rotate(self, key_typed, game_grid, clock_direction=True):
+    def rotate_tertromino(self, key_typed, game_grid, clock_direction=True):
         if clock_direction == True:
             if self.type == 'I':
                 tiles, pos = game_grid.current_tetromino.get_min_bounded_tile_matrix(True)
-
+                print(tiles)
+                print(pos)
             elif self.type == 'O':
-                pass
+                tiles, pos = game_grid.current_tetromino.get_min_bounded_tile_matrix(True)
+                print(tiles)
+                print(pos)
+
             elif self.type == 'Z':
-                pass
+                tiles, pos = game_grid.current_tetromino.get_min_bounded_tile_matrix(True)
+                print(tiles)
+                print(pos)
             elif self.type == 'S':
-                pass
+                tiles, pos = game_grid.current_tetromino.get_min_bounded_tile_matrix(True)
+                print(tiles)
+                print(pos)
             elif self.type == 'T':
-                pass
+                tiles, pos = game_grid.current_tetromino.get_min_bounded_tile_matrix(True)
+                print(tiles)
+                print(pos)
             elif self.type == 'L':
-                pass
+                tiles, pos = game_grid.current_tetromino.get_min_bounded_tile_matrix(True)
+                print(tiles)
+                new_current_tetromino = tiles
+                new_current_tetromino[0][0] = tiles[2][1]
+                print(new_current_tetromino)
+                # new_current_tetromino[0][0] = tiles[0][0]
+                return new_current_tetromino
+
             elif self.type == 'J':
-                pass
+                tiles, pos = game_grid.current_tetromino.get_min_bounded_tile_matrix(True)
+                print(tiles)
+                print(pos)
+        else:
+            pass
+
 
