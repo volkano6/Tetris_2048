@@ -75,6 +75,7 @@ class Tetromino:
             col_index, row_index = occupied_tiles[i][0], occupied_tiles[i][1]
             # create the tile at the computed position
             self.tile_matrix[row_index][col_index] = Tile()
+
         # initialize the position of the tetromino (the bottom left cell in the
         # tile matrix) with a random horizontal position above the game grid
         self.bottom_left_cell = Point()
@@ -138,6 +139,23 @@ class Tetromino:
                     # draw only the tiles that are inside the game grid
                     if position.y < self.grid_height:
                         self.tile_matrix[row][col].draw(position)
+
+    # Method for drawing the next tetromino on the game grid
+    def draw_next_tetromino(self):
+        n = len(self.tile_matrix)  # n = number of rows = number of columns
+        for row in range(n):
+            for col in range(n):
+                # draw each occupied tile (not equal to None) on the game grid
+                if self.tile_matrix[row][col] is not None:
+                    # get the position of the tile
+                    position = Point()
+                    position.x = row + 12.7
+                    position.y = col + 1.5
+                    # draw only the tiles that are inside the game grid
+                    if position.y < self.grid_height:
+                        self.tile_matrix[row][col].draw(position)
+
+
 
     # Method for moving the tetromino in a given direction by 1 on the game grid
     def move(self, direction, game_grid):
@@ -212,9 +230,9 @@ class Tetromino:
                         break  # end the inner for loop
         return True  # tetromino can be moved in the given direction
 
-    def rotate_tertromino(self, key_typed, game_grid, clock_direction=True):
+    def rotate_tertromino(self, game_grid, clock_direction=True):
 
-        if not (self.can_be_rotate()):
+        if not (self.can_be_rotated()):
             pass
 
         if clock_direction:
@@ -235,5 +253,5 @@ class Tetromino:
             flip_matrix = np.flipud(transpose_matrix)
             self.tile_matrix = flip_matrix
 
-    def can_be_rotate(self):
+    def can_be_rotated(self):
         pass

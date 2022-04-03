@@ -17,7 +17,7 @@ def start():
     canvas_h, canvas_w = 35 * grid_h, 45 * grid_w
     stddraw.setCanvasSize(canvas_w, canvas_h)
     # set the scale of the coordinate system
-    stddraw.setXscale(-0.5, grid_w + 2.5)
+    stddraw.setXscale(-0.5, grid_w + 4.4)
     stddraw.setYscale(-0.5, grid_h - 0.5)
 
     # set the dimension values stored and used in the Tetromino class
@@ -25,12 +25,24 @@ def start():
     Tetromino.grid_width = grid_w
 
     # create the game grid
-
     grid = GameGrid(grid_h, grid_w)
-    # create the first tetromino to enter the game grid
+
+    # created list ("tetromino_list") for tetrominoes
+    # When the "current_tetromino" is done None, new tetromino takes in "tetromino_list"
+    tetromino_list = [create_tetromino(grid_h, grid_w),
+                      create_tetromino(grid_h, grid_w),
+                      create_tetromino(grid_h, grid_w)]
+    # tetromino list is entered the game grid
+    grid.tetromino_list = tetromino_list
+
+    # first tetromino is entered the game grid
     # by using the create_tetromino function defined below
-    current_tetromino = create_tetromino(grid_h, grid_w)
-    grid.current_tetromino = current_tetromino   # for ex : as <tetromino.Tetromino object at 0x000001A3EA751540>
+    current_tetromino = tetromino_list[0]
+    grid.current_tetromino = current_tetromino
+
+    # First value of "tetromino_list" is used. This part update tetrominoes list.
+    tetromino_list.pop(0)
+    tetromino_list.append(create_tetromino(grid_h, grid_w))
 
     # display a simple menu before opening    game
     # by using the display_game_menu function defined below
@@ -54,13 +66,13 @@ def start():
                 # move the active tetromino down by one
                 # (soft drop: causes the tetromino to fall down faster)
                 current_tetromino.move(key_typed, grid)
+            elif key_typed == "left ctrl":
+                # move the active tetromino down to deepest
+                clock_direction = False
             elif key_typed == "up":
                 # move the active tetromino's rotate change
-                grid.current_tetromino.rotate_tertromino("up", grid, clock_direction = True)
+                grid.current_tetromino.rotate_tertromino(grid, clock_direction=True)
             # clear the queue of the pressed keys for a smoother interaction
-            elif key_typed == "ctrl":
-                # move the active tetromino down to deepest
-                pass
             elif key_typed == "space":
                 # move the active tetromino drop
                 # (drop: causes the tetromino to fall to the deepest place )
@@ -70,21 +82,26 @@ def start():
 
         # move the active tetromino down by one at each iteration (auto fall)
         success = current_tetromino.move("down", grid)
-
         # place the active tetromino on the grid when it cannot go down anymore
         if not success:
             # get the tile matrix of the tetromino without empty rows and columns
             # and the position of the bottom left cell in this matrix
             tiles, pos = grid.current_tetromino.get_min_bounded_tile_matrix(True)
+
             # update the game grid by locking the tiles of the landed tetromino
             game_over = grid.update_grid(tiles, pos)
             # end the main game loop if the game is over
             if game_over:
                 break
+
             # create the next tetromino to enter the game grid
             # by using the create_tetromino function defined below
-            current_tetromino = create_tetromino(grid_h, grid_w)
+            current_tetromino = tetromino_list[0]
             grid.current_tetromino = current_tetromino
+
+            # First value of "tetromino_list" is used. This part update tetrominoes list.
+            tetromino_list.pop(0)
+            tetromino_list.append(create_tetromino(grid_h, grid_w))
 
         # display the game grid and the current tetromino
         grid.display()

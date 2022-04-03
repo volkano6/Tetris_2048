@@ -6,8 +6,19 @@ from point import Point  # used for tile positions
 import numpy as np  # fundamental Python module for scientific computing
 
 
-
 # Class used for modelling the game grid
+def print_score():
+    stddraw.setPenColor(stddraw.GRAY)
+    stddraw.boldText(14, 19, "SCORE")
+
+
+# draw next tetromino on the right bottom of game grid.
+def show_next_tetromino(arr):
+    # draw title
+    stddraw.boldText(13.8, 5, "NEXT TETROMINO")
+    arr[0].draw_next_tetromino()
+
+
 class GameGrid:
     # Constructor for creating the game grid based on the given arguments
     def __init__(self, grid_h, grid_w):
@@ -18,6 +29,7 @@ class GameGrid:
         self.tile_matrix = np.full((grid_h, grid_w), None)
         # create the te1tromino that is currently being moved on the game grid
         self.current_tetromino = None
+        self.tetromino_list = None
         # the game_over flag shows whether the game is over or not
         self.game_over = False
         # set the color used for the empty grid cells
@@ -39,8 +51,12 @@ class GameGrid:
         # game grid is updated)
         if self.current_tetromino is not None:
             self.current_tetromino.draw()
-        print_score("SCORE")
-        show_next("NEXT")
+
+        # draw SCORE board
+        print_score()
+        # draw next tetromino
+        show_next_tetromino(self.tetromino_list)
+
         # draw a box around the game grid
         self.draw_boundaries()
         # show the resulting drawing with a pause duration = 250 ms
@@ -120,18 +136,3 @@ class GameGrid:
                         self.game_over = True
         # return the game_over flag
         return self.game_over
-
-
-# print text score.     ------------It Will Be Updated--------------
-def print_score(score):
-    stddraw.setPenColor(stddraw.GRAY)
-    stddraw.boldText(13, 19, score)
-
-
-def show_next(next):
-    stddraw.boldText(13, 4, next)
-
-
-
-
-
