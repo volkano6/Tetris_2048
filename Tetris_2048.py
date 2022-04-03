@@ -30,7 +30,6 @@ def start():
     # created list ("tetromino_list") for tetrominoes
     # When the "current_tetromino" is done None, new tetromino takes in "tetromino_list"
     tetromino_list = [create_tetromino(grid_h, grid_w),
-                      create_tetromino(grid_h, grid_w),
                       create_tetromino(grid_h, grid_w)]
     # tetromino list is entered the game grid
     grid.tetromino_list = tetromino_list
@@ -50,6 +49,8 @@ def start():
 
     # the main game loop (keyboard interaction for moving the tetromino)
     while True:
+        # print("------------------")
+        # print(grid.tile_matrix)
         # check user interactions via the keyboard
         if stddraw.hasNextKeyTyped():  # check if the user has pressed a key
             key_typed = stddraw.nextKeyTyped()  # the most recently pressed key
@@ -76,7 +77,7 @@ def start():
             elif key_typed == "space":
                 # move the active tetromino drop
                 # (drop: causes the tetromino to fall to the deepest place )
-                pass
+                print("space ")
             # clear the queue of the pressed keys for a smoother interaction
             stddraw.clearKeysTyped()
 

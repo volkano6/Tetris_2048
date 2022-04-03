@@ -41,6 +41,21 @@ class GameGrid:
         self.line_thickness = 0.002
         self.box_thickness = 2 * self.line_thickness
 
+    def piece_drop(self):
+        pass
+
+    # Write commend
+    def clear_full_lines(self):
+        for row in range(self.grid_height):
+            full_cell = 0
+            for col in range(self.grid_width):
+                if self.tile_matrix[row][col] is not None:
+                    full_cell += 1
+                if full_cell >= 12:
+                    for row2 in range(self.grid_width):
+                        self.tile_matrix[row][row2] = None
+
+
     # Method used for displaying the game grid
     def display(self):
         # clear the background to empty_cell_color
@@ -56,6 +71,7 @@ class GameGrid:
         print_score()
         # draw next tetromino
         show_next_tetromino(self.tetromino_list)
+        self.clear_full_lines()
 
         # draw a box around the game grid
         self.draw_boundaries()
