@@ -232,7 +232,7 @@ class Tetromino:
 
     def rotate_tertromino(self, game_grid, clock_direction=True):
 
-        if not (self.can_be_rotated()):
+        if self.can_be_rotated():
             pass
 
         if clock_direction:
@@ -243,6 +243,7 @@ class Tetromino:
             # and the column elements into row elements.
             transpose_matrix = np.transpose(flip_matrix)
             self.tile_matrix = transpose_matrix
+            print(transpose_matrix)
 
         else:
 

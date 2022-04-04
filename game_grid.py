@@ -44,7 +44,7 @@ class GameGrid:
     def piece_drop(self):
         pass
 
-    # Write commend
+    # Write commend ,
     def clear_full_lines(self):
         for row in range(self.grid_height):
             full_cell = 0
@@ -54,7 +54,31 @@ class GameGrid:
                 if full_cell >= 12:
                     for row2 in range(self.grid_width):
                         self.tile_matrix[row][row2] = None
+                    self.drop_tile(row)
 
+    def drop_tile(self, upThisrRow):
+        tiles = []
+        tiles_position = []
+
+        # SİLİNEN KISMIN ÜST TARAFINDAKİ TİLE VE KONUMLARI BULUR VE TİLE ARRAYINE EKLER
+        for row in range(upThisrRow, self.grid_height):
+            for col in range(self.grid_width):
+                if self.is_occupied(row, col):
+                    tiles.append(self.tile_matrix[row][col])
+                    cell_point = Point()
+                    cell_point.x = col
+                    cell_point.y = row
+                    tiles_position.append(cell_point)
+        for current_tile in range(len(tiles)):
+            tiles[current_tile].position.x = tiles_position[current_tile].x
+            tiles[current_tile].position.y = tiles_position[current_tile].y
+
+
+        # ANA MATRİKSTEKİ TİLELERİN KONUMUNU BİRER AŞAĞI İNDİRİR
+        for value in range(len(tiles)):
+            a = self.tile_matrix[tiles[value].position.y][tiles[value].position.x]
+            self.tile_matrix[tiles[value].position.y - 1][tiles[value].position.x] = a
+            self.tile_matrix[tiles[value].position.y][tiles[value].position.x] = None
 
     # Method used for displaying the game grid
     def display(self):
@@ -71,6 +95,7 @@ class GameGrid:
         print_score()
         # draw next tetromino
         show_next_tetromino(self.tetromino_list)
+
         self.clear_full_lines()
 
         # draw a box around the game grid

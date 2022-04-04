@@ -45,12 +45,11 @@ def start():
 
     # display a simple menu before opening    game
     # by using the display_game_menu function defined below
-    # display_game_menu(grid_h, grid_w + 3)
-
+    #display_game_menu(grid_h, grid_w + 3)
+    clock_direction = True
     # the main game loop (keyboard interaction for moving the tetromino)
     while True:
-        # print("------------------")
-        # print(grid.tile_matrix)
+
         # check user interactions via the keyboard
         if stddraw.hasNextKeyTyped():  # check if the user has pressed a key
             key_typed = stddraw.nextKeyTyped()  # the most recently pressed key
@@ -69,10 +68,13 @@ def start():
                 current_tetromino.move(key_typed, grid)
             elif key_typed == "left ctrl":
                 # move the active tetromino down to deepest
-                clock_direction = False
+                if clock_direction:
+                    clock_direction = False
+                else:
+                    clock_direction = True
             elif key_typed == "up":
                 # move the active tetromino's rotate change
-                grid.current_tetromino.rotate_tertromino(grid, clock_direction=True)
+                grid.current_tetromino.rotate_tertromino(grid, clock_direction)
             # clear the queue of the pressed keys for a smoother interaction
             elif key_typed == "space":
                 # move the active tetromino drop
@@ -85,6 +87,7 @@ def start():
         success = current_tetromino.move("down", grid)
         # place the active tetromino on the grid when it cannot go down anymore
         if not success:
+
             # get the tile matrix of the tetromino without empty rows and columns
             # and the position of the bottom left cell in this matrix
             tiles, pos = grid.current_tetromino.get_min_bounded_tile_matrix(True)
@@ -103,7 +106,8 @@ def start():
             # First value of "tetromino_list" is used. This part update tetrominoes list.
             tetromino_list.pop(0)
             tetromino_list.append(create_tetromino(grid_h, grid_w))
-
+            print("------------------")
+            print(grid.tile_matrix)
         # display the game grid and the current tetromino
         grid.display()
 
