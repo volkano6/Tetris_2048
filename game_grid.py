@@ -42,7 +42,8 @@ class GameGrid:
         self.box_thickness = 2 * self.line_thickness
 
     def piece_drop(self):
-        pass
+        while self.current_tetromino.can_be_moved("down", self):
+            self.current_tetromino.bottom_left_cell.y -= 1
 
     # Write commend ,
     def clear_full_lines(self):
@@ -101,7 +102,7 @@ class GameGrid:
         # draw a box around the game grid
         self.draw_boundaries()
         # show the resulting drawing with a pause duration = 250 ms
-        stddraw.show(250)
+        stddraw.show(150)
 
     # Method for drawing the cells and the lines of the game grid
     def draw_grid(self):

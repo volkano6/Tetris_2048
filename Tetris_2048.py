@@ -79,7 +79,7 @@ def start():
             elif key_typed == "space":
                 # move the active tetromino drop
                 # (drop: causes the tetromino to fall to the deepest place )
-                print("space ")
+                grid.piece_drop()
             # clear the queue of the pressed keys for a smoother interaction
             stddraw.clearKeysTyped()
 
@@ -118,7 +118,7 @@ def start():
 # Function for creating random shaped tetrominoes to enter the game grid
 def create_tetromino(grid_height, grid_width):
     # type (shape) of the tetromino is determined randomly
-    tetromino_types = ['I', 'O', 'Z', 'S', 'T', 'L', 'J']
+    tetromino_types = ['O'] #'I', 'O', 'Z', 'S', 'T', 'L', 'J'
     random_index = random.randint(0, len(tetromino_types) - 1)
     random_type = tetromino_types[random_index]
     # create and return the tetromino
