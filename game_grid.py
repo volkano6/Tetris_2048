@@ -172,58 +172,92 @@ class GameGrid:
 
         return tile_arr_binary
 
-    def connected_component(self,list):
-        #list=self.tile_array_to_binary()
-        list_height= self.grid_height
-        list_width= self.grid_width
-        # list_height = list.shape[0]
-        # list_width = list.shape[1]
+    def connected_component(self,binarized):
+        max_label = int(100000)
+        row = binarized.shape[0]
+        column = binarized.shape[1]
 
-        background = 0
-        curr_object = 0
-        equivalency_list = {}
+        # create a new array that will hold the labels and that has the same shape with the binarized array
+        im = np.full(shape=(row, column), dtype=int, fill_value=max_label)
 
-        for a in range(list_height):
-            for b in range(list_width):
-                if list[a][b] != background:
+        # create an label holder array
+        a = np.arange(0, max_label, dtype=int)
 
-                    if a > 0:
-                        # look at tile above
-                        tile_above = list[a - 1][b]
+        k = 0
+        # start labeling by checking connected tiles
+        for i in range(1, row - 1):
+            for j in range(1, column - 1):
+                # get the related tiles
+                c = binarized[i][j]
+                label_u = im[i - 1][j]
+                label_l = im[i][j - 1]
 
-                    if b > 0:
-                        # look at tile before
-                        tile_before = list[a][b - 1]
+                # check if the tile exists
+                if c == 1:
+                    # get the minimum labeled tile around the current one
+                    min_label = min(label_u, label_l)
 
-                    if tile_above != background and tile_before != background:
-                        classification = min(tile_above, tile_before)
-                        equivalency_list[max(tile_above, tile_before)] = classification
-                    elif tile_above != background:
-                        classification = tile_above
-                    elif tile_before != background:
-                        classification = tile_before
+                    # if the minimum labeled tile has the maximum label value, give it a temp value
+                    # else, update the array with the label
+                    if min_label == max_label:  # u = l = 0
+                        k += 1
+                        im[i][j] = k
                     else:
-                        # assign a new label
-                        curr_object += 1
-                        equivalency_list[curr_object] = curr_object
-                        classification = curr_object
+                        im[i][j] = min_label
+                        if min_label != label_u and label_u != max_label:
+                            self.update_labeled_array(a, min_label, label_u)
 
-                    list[a][b] = classification
+                        if min_label != label_l and label_l != max_label:
+                            self.update_labeled_array(a, min_label, label_l)
 
-        # update classifications based on equivalency list
-        for a in range(list_height):
-            for b in range(list_width):
-                if list[a][b] != background:
-                    new_value = equivalency_list[list[a][b]]
-                    list[a][b] = new_value
+        # initialize an array for labels
+        labels = []
 
-        print("New Labeled List: " + str(list))
-        print("Equivalency List: " + str(equivalency_list))
+        # final reduction in the label array, also add the labels into the label list
+        for i in range(k + 1):
+            index = i
+            while a[index] != index:
+                index = a[index]
+            a[i] = a[index]
+            labels.append(a[i])
 
+        # Removes duplicates drom the list
+        labels = list(dict.fromkeys(labels))
+        labels.pop(0)
 
+        # second pass to resolve labels
+        for i in range(row):
+            for j in range(column):
+                if binarized[i][j] == 1 and im[i][j] != max_label:
+                    im[i][j] = a[im[i][j]]
+                else:
+                    im[i][j] = 0
 
+        print(im)
+        print(labels)
+        # return the labeled array, label list
+        return im, len(labels)
 
-
+    def update_labeled_array(self, a, label1, label2):
+        index = lab_small = lab_large = 0
+        if label1 < label2:
+            lab_small = label1
+            lab_large = label2
+        else:
+            lab_small = label2
+            lab_large = label1
+        index = lab_large
+        while index > 1 and a[index] != lab_small:
+            if a[index] < lab_small:
+                temp = index
+                index = lab_small
+                lab_small = a[temp]
+            elif a[index] > lab_small:
+                temp = a[index]
+                a[index] = lab_small
+                index = temp
+            else:
+                break
 
     # Method used for displaying the game grid
     def display(self):
@@ -241,7 +275,9 @@ class GameGrid:
         # draw next tetromino
         show_next_tetromino(self.tetromino_list)
 
-        # self.merge()
+        self.merge()
+
+        self.connected_component(self.tile_array_to_binary())
 
         self.clear_full_lines()
 

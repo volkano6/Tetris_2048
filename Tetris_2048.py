@@ -43,6 +43,7 @@ def start():
     tetromino_list.pop(0)
     tetromino_list.append(create_tetromino(grid_h, grid_w))
 
+
     # display a simple menu before opening    game
     # by using the display_game_menu function defined below
     #display_game_menu(grid_h, grid_w + 3)
@@ -100,7 +101,7 @@ def start():
                 break
 
             # create the next tetromino to enter the game grid
-            # by using the create_tetromino function defined below
+            # by using the crea  te_tetromino function defined below
             current_tetromino = tetromino_list[0]
             grid.current_tetromino = current_tetromino
 
@@ -108,8 +109,9 @@ def start():
             tetromino_list.pop(0)
             tetromino_list.append(create_tetromino(grid_h, grid_w))
 
-            grid.tile_array_to_binary()
-            #grid.connected_component(binary_tile_arr)
+            binary = grid.tile_array_to_binary()
+            grid.connected_component(binary)
+
 
         # display the game grid and the current tetromino
         grid.display()

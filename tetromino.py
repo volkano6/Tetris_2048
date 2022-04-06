@@ -1,3 +1,4 @@
+import game_grid
 from tile import Tile  # used for modeling each tile on the tetromino
 from point import Point  # used for tile positions
 import copy as cp  # the copy module is used for copying tiles and positions
@@ -255,4 +256,12 @@ class Tetromino:
             self.tile_matrix = flip_matrix
 
     def can_be_rotated(self):
-        pass
+        position = Point()
+        if position.x < 0:
+            return False
+        if position.x >= self.grid_width:
+            return False
+        if game_grid.GameGrid.is_occupied(position.y, position.x):
+            return False
+        else:
+            return True
