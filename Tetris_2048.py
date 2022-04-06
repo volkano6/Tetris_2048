@@ -48,6 +48,7 @@ def start():
     #display_game_menu(grid_h, grid_w + 3)
     clock_direction = True
     # the main game loop (keyboard interaction for moving the tetromino)
+
     while True:
 
         # check user interactions via the keyboard
@@ -107,6 +108,9 @@ def start():
             # First value of "tetromino_list" is used. This part update tetrominoes list.
             tetromino_list.pop(0)
             tetromino_list.append(create_tetromino(grid_h, grid_w))
+
+            binary_tile_arr= grid.tile_array_to_binary()
+            #grid.connected_component(binary_tile_arr)
 
         # display the game grid and the current tetromino
         grid.display()

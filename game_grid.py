@@ -1,3 +1,5 @@
+import numpy
+
 import lib.stddraw as stddraw  # stddraw is used as a basic graphics library
 from tile import Tile
 
@@ -64,7 +66,7 @@ class GameGrid:
                     if current_tile.number == bottom_tile.number:
                         bottom_tile.tile_value_for_merge(current_tile.number + bottom_tile.number)
                         self.tile_matrix[tiles[tile].position.y][tiles[tile].position.x] = None
-                        self.delete_tiles_2048()
+                        #self.delete_tiles_2048()
 
     def drop_tiles_2048(self):
 
@@ -158,6 +160,71 @@ class GameGrid:
             tiles[current_tile].position.y = tiles_position[current_tile].y
 
         return tiles
+
+
+    def tile_array_to_binary(self):
+        (row,column)=self.tile_matrix.shape
+        tile_arr_binary = np.full((row,column),0)
+        for i in range(row):
+            for j in (range(column)):
+                if self.tile_matrix[i][j] != None:
+                    tile_arr_binary[i][j]=1
+
+        print(tile_arr_binary)
+
+        return tile_arr_binary
+
+    # def connected_component(self,list):
+    #     #list=self.tile_array_to_binary()
+    #     list_height= self.grid_height
+    #     list_width= self.grid_width
+    #     # list_height = list.shape[0]
+    #     # list_width = list.shape[1]
+    #
+    #     background = 0
+    #     curr_object = 0
+    #     equivalency_list = {}
+    #
+    #     for a in range(list_height):
+    #         for b in range(list_width):
+    #             if list[a][b] != background:
+    #
+    #                 if a > 0:
+    #                     # look at tile above
+    #                     tile_above = list[a - 1][b]
+    #
+    #                 if b > 0:
+    #                     # look at tile before
+    #                     tile_before = list[a][b - 1]
+    #
+    #                 if tile_above != background and tile_before != background:
+    #                     classification = min(tile_above, tile_before)
+    #                     equivalency_list[max(tile_above, tile_before)] = classification
+    #                 elif tile_above != background:
+    #                     classification = tile_above
+    #                 elif tile_before != background:
+    #                     classification = tile_before
+    #                 else:
+    #                     # assign a new label
+    #                     curr_object += 1
+    #                     equivalency_list[curr_object] = curr_object
+    #                     classification = curr_object
+    #
+    #                 list[a][b] = classification
+    #
+    #     # update classifications based on equivalency list
+    #     for a in range(list_height):
+    #         for b in range(list_width):
+    #             if list[a][b] != background:
+    #                 new_value = equivalency_list[list[a][b]]
+    #                 list[a][b] = new_value
+    #
+    #     print("New Labeled List: " + str(list))
+    #     print("Equivalency List: " + str(equivalency_list))
+    #
+
+
+
 
     # Method used for displaying the game grid
     def display(self):
@@ -258,3 +325,6 @@ class GameGrid:
                         self.game_over = True
         # return the game_over flag
         return self.game_over
+
+
+
