@@ -64,26 +64,44 @@ class GameGrid:
                     if current_tile.number == bottom_tile.number:
                         bottom_tile.tile_value_for_merge(current_tile.number + bottom_tile.number)
                         self.tile_matrix[tiles[tile].position.y][tiles[tile].position.x] = None
-                        self.drop_tiles_2048()
+                        self.delete_tiles_2048()
 
     def drop_tiles_2048(self):
 
         tiles = self.find_all_tiles_position()
         tiles_can_move_down = []
 
-        # for tile in range(len(tiles)):
-        #
-        #     if (self.tile_matrix[tiles[tile].position.y - 1][tiles[tile].position.x] is None) and (tiles[tile].position.y != 0) and (self.tile_matrix[tiles[tile].position.y][tiles[tile].position.x - 1] is None) and (self.tile_matrix[tiles[tile].position.y][tiles[tile].position.x + 1] is None):
-        #         tiles_can_move_down.append(self.tile_matrix[tiles[tile].position.y][tiles[tile].position.x])
-        #
-        #     for tile_in_move_list in range(len(tiles_can_move_down)):
-        #         stop = (self.tile_matrix[tiles_can_move_down[tile_in_move_list].position.y - 1][tiles_can_move_down[tile_in_move_list].position.x] is not None) or (tiles_can_move_down[tile_in_move_list].position.y != 0) or (self.tile_matrix[tiles_can_move_down[tile_in_move_list].position.y][tiles_can_move_down[tile_in_move_list].position.x - 1] is not None) or (self.tile_matrix[tiles_can_move_down[tile_in_move_list].position.y][tiles_can_move_down[tile_in_move_list].position.x + 1] is not None)
-        #         while stop:
-        #             drop_tile = self.tile_matrix[tiles_can_move_down[tile_in_move_list].position.y][tiles_can_move_down[tile_in_move_list].position.x]
-        #             self.tile_matrix[tiles_can_move_down[tile_in_move_list].position.y - 1][tiles_can_move_down[tile_in_move_list].position.x] = drop_tile
-        #             self.tile_matrix[tiles_can_move_down[tile_in_move_list].position.y][tiles_can_move_down[tile_in_move_list].position.x] = None
-        #
-        #             break
+        for tile in range(len(tiles)):
+            # tiles_can_move_down nın içi koşullara göre doldu
+            if (self.tile_matrix[tiles[tile].position.y - 1][tiles[tile].position.x] is None) and (tiles[tile].position.y != 0) and (self.tile_matrix[tiles[tile].position.y][tiles[tile].position.x - 1] is None) and (self.tile_matrix[tiles[tile].position.y][tiles[tile].position.x + 1] is None):
+                tiles_can_move_down.append(self.tile_matrix[tiles[tile].position.y][tiles[tile].position.x])
+
+
+
+            # for tile_in_move_list in range(len(tiles_can_move_down)):
+            #     stop = (self.tile_matrix[tiles_can_move_down[tile_in_move_list].position.y - 1][tiles_can_move_down[tile_in_move_list].position.x] is not None) or (tiles_can_move_down[tile_in_move_list].position.y != 0) or (self.tile_matrix[tiles_can_move_down[tile_in_move_list].position.y][tiles_can_move_down[tile_in_move_list].position.x - 1] is not None) or (self.tile_matrix[tiles_can_move_down[tile_in_move_list].position.y][tiles_can_move_down[tile_in_move_list].position.x + 1] is not None)
+            #     while stop:
+            #         drop_tile = self.tile_matrix[tiles_can_move_down[tile_in_move_list].position.y][tiles_can_move_down[tile_in_move_list].position.x]
+            #         self.tile_matrix[tiles_can_move_down[tile_in_move_list].position.y - 1][tiles_can_move_down[tile_in_move_list].position.x] = drop_tile
+            #         self.tile_matrix[tiles_can_move_down[tile_in_move_list].position.y][tiles_can_move_down[tile_in_move_list].position.x] = None
+            #
+            #         break
+
+    def delete_tiles_2048(self):
+
+        tiles = self.find_all_tiles_position()
+        tiles_can_move_down = []
+
+        for tile in range(len(tiles)):
+            # tiles_can_move_down nın içi koşullara göre doldu
+            if (self.tile_matrix[tiles[tile].position.y - 1][tiles[tile].position.x] is None) and \
+                    (tiles[tile].position.y != 0) and \
+                    (self.tile_matrix[tiles[tile].position.y][tiles[tile].position.x - 1] is None) and \
+                    (self.tile_matrix[tiles[tile].position.y][tiles[tile].position.x + 1] is None):
+                tiles_can_move_down.append(self.tile_matrix[tiles[tile].position.y][tiles[tile].position.x])
+
+        for del_tiles in range(len(tiles_can_move_down)):
+            self.tile_matrix[tiles_can_move_down[del_tiles].position.y][tiles_can_move_down[del_tiles].position.x] = None
 
 
 

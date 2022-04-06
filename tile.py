@@ -58,7 +58,7 @@ class Tile:
 
         elif value == 16:
             # set the number on the tile
-            self.number = 8
+            self.number = 16
             # set the colors of the tile
             self.background_color = Color(200, 190, 200)  # background (tile) color
             self.foreground_color = Color(0, 0, 128)  # foreground (number) color
@@ -66,7 +66,7 @@ class Tile:
 
         elif value == 32:
             # set the number on the tile
-            self.number = 8
+            self.number = 32
             # set the colors of the tile
             self.background_color = Color(100, 190, 200)  # background (tile) color
             self.foreground_color = Color(0, 0, 128)  # foreground (number) color
@@ -74,7 +74,7 @@ class Tile:
 
         elif value == 64:
             # set the number on the tile
-            self.number = 8
+            self.number = 64
             # set the colors of the tile
             self.background_color = Color(100, 190, 200)  # background (tile) color
             self.foreground_color = Color(0, 0, 128)  # foreground (number) color
