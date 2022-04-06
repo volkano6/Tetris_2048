@@ -30,6 +30,7 @@ if __name__ == "__main__":
                                  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]])
 
 
+
     # find image size
     list_height = list.shape[0]
     list_width = list.shape[1]

@@ -224,6 +224,7 @@ class GameGrid:
 
 
 
+
     # Method used for displaying the game grid
     def display(self):
         # clear the background to empty_cell_color

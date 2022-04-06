@@ -118,6 +118,7 @@ def start():
     print("Game over")
 
 
+
 # Function for creating random shaped tetrominoes to enter the game grid
 def create_tetromino(grid_height, grid_width):
     # type (shape) of the tetromino is determined randomly
