@@ -99,7 +99,6 @@ def start():
             if game_over:
                 break
 
-            grid.merge()
             # create the next tetromino to enter the game grid
             # by using the create_tetromino function defined below
             current_tetromino = tetromino_list[0]

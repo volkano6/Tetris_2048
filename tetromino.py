@@ -243,7 +243,7 @@ class Tetromino:
             # and the column elements into row elements.
             transpose_matrix = np.transpose(flip_matrix)
             self.tile_matrix = transpose_matrix
-            print(transpose_matrix)
+
 
         else:
 
