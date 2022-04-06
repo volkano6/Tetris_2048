@@ -1,3 +1,5 @@
+import numpy
+
 import lib.stddraw as stddraw  # stddraw is used as a basic graphics library
 from tile import Tile
 
@@ -45,7 +47,7 @@ class GameGrid:
 
         tiles = self.find_all_tiles_position()
 
-        for tile in (range(len(tiles))):  # Tileler arasında büyükten küçüğe dolaş
+        for tile in reversed(range(len(tiles))):  # Tileler arasında büyükten küçüğe dolaş
             # sıradaki tile path
             current_tile = self.tile_matrix[tiles[tile].position.y][tiles[tile].position.x]
             # eğer ilk satırda değilsek devam et
@@ -64,9 +66,7 @@ class GameGrid:
                     if current_tile.number == bottom_tile.number:
                         bottom_tile.tile_value_for_merge(current_tile.number + bottom_tile.number)
                         self.tile_matrix[tiles[tile].position.y][tiles[tile].position.x] = None
-
-                        stddraw.show(200)
-                        self.drop_tiles_2048()
+                        #self.delete_tiles_2048()
 
     def drop_tiles_2048(self):
 
@@ -75,79 +75,19 @@ class GameGrid:
 
         for tile in range(len(tiles)):
             # tiles_can_move_down nın içi koşullara göre doldu
-            if (self.tile_matrix[tiles[tile].position.y - 1][tiles[tile].position.x] is None) and (
-                    tiles[tile].position.y != 0) and (
-                    self.tile_matrix[tiles[tile].position.y][tiles[tile].position.x - 1] is None) and (
-                    self.tile_matrix[tiles[tile].position.y][tiles[tile].position.x + 1] is None):
+            if (self.tile_matrix[tiles[tile].position.y - 1][tiles[tile].position.x] is None) and (tiles[tile].position.y != 0) and (self.tile_matrix[tiles[tile].position.y][tiles[tile].position.x - 1] is None) and (self.tile_matrix[tiles[tile].position.y][tiles[tile].position.x + 1] is None):
                 tiles_can_move_down.append(self.tile_matrix[tiles[tile].position.y][tiles[tile].position.x])
 
-            for tile_in_move_list in range(len(tiles_can_move_down)):
-                stop = (self.tile_matrix[tiles_can_move_down[tile_in_move_list].position.y - 1][tiles_can_move_down[tile_in_move_list].position.x] is not None) or (tiles_can_move_down[tile_in_move_list].position.y != 0) or (self.tile_matrix[tiles_can_move_down[tile_in_move_list].position.y][tiles_can_move_down[tile_in_move_list].position.x - 1] is not None) or (self.tile_matrix[tiles_can_move_down[tile_in_move_list].position.y][tiles_can_move_down[tile_in_move_list].position.x + 1] is not None)
-                while stop:
-                    drop_tile = self.tile_matrix[tiles_can_move_down[tile_in_move_list].position.y][tiles_can_move_down[tile_in_move_list].position.x]
-                    self.tile_matrix[tiles_can_move_down[tile_in_move_list].position.y - 1][tiles_can_move_down[tile_in_move_list].position.x] = drop_tile
-                    self.tile_matrix[tiles_can_move_down[tile_in_move_list].position.y][tiles_can_move_down[tile_in_move_list].position.x] = None
 
-                    break
 
-    def merge_2(self):
-
-        tiles = self.find_all_tiles_position()
-
-        for tile in (range(len(tiles))):  # Tileler arasında büyükten küçüğe dolaş
-            # sıradaki tile path
-            current_tile = self.tile_matrix[tiles[tile].position.y][tiles[tile].position.x]
-            # eğer ilk satırda değilsek devam et
-            if current_tile.position.y != 0:
-                # current tilenin altındaki tile pathı
-                bottom_tile = self.tile_matrix[tiles[tile].position.y - 1][tiles[tile].position.x]
-                # eğer none değilse konum ataması yap
-                if bottom_tile is not None:
-                    # Alttaki cell boş orayı tail ile doldururuz
-                    bottom_tile.position = Point()
-                    bottom_tile.position.x = current_tile.position.x
-                    bottom_tile.position.y = current_tile.position.y
-                    bottom_tile.position.y -= 1
-
-                    # eğer numberları aynı ise merge işlemini gerçekleştir
-                    if current_tile.number == bottom_tile.number:
-                        bottom_tile.tile_value_for_merge(current_tile.number + bottom_tile.number)
-                        self.tile_matrix[tiles[tile].position.y][tiles[tile].position.x] = None
-
-                        stddraw.show(50)
-                        self.drop_tiles_2048_2()
-
-    def drop_tiles_2048_2(self):
-
-        tiles = self.find_all_tiles_position(0)
-        tiles_can_move_down = []
-
-        for x in range(len(tiles)):
-            print(tiles[x].position)
-
-        for tile in range(len(tiles)):
-            # tiles_can_move_down nın içi koşullara göre doldu
-            if (self.tile_matrix[tiles[tile].position.y - 1][tiles[tile].position.x] is None) and (
-                    tiles[tile].position.y != 0) and (
-                    self.tile_matrix[tiles[tile].position.y][tiles[tile].position.x - 1] is None) and (
-                    tiles[tile].position.x + 1 != 12) and (
-                     self.tile_matrix[tiles[tile].position.y][tiles[tile].position.x + 1] is None):
-                tiles_can_move_down.append(self.tile_matrix[tiles[tile].position.y][tiles[tile].position.x])
-
-        print("--")
-
-        for x in range(len(tiles_can_move_down)):
-            print(tiles_can_move_down[x].position)
-        # self.tile_drop(tiles_can_move_down)
-        #     for tile_in_move_list in range(len(tiles_can_move_down)):
-        #         stop = (self.tile_matrix[tiles_can_move_down[tile_in_move_list].position.y - 1][tiles_can_move_down[tile_in_move_list].position.x] is not None) or (tiles_can_move_down[tile_in_move_list].position.y != 0) or (self.tile_matrix[tiles_can_move_down[tile_in_move_list].position.y][tiles_can_move_down[tile_in_move_list].position.x - 1] is not None) or (self.tile_matrix[tiles_can_move_down[tile_in_move_list].position.y][tiles_can_move_down[tile_in_move_list].position.x + 1] is not None)
-        #         while stop:
-        #             drop_tile = self.tile_matrix[tiles_can_move_down[tile_in_move_list].position.y][tiles_can_move_down[tile_in_move_list].position.x]
-        #             self.tile_matrix[tiles_can_move_down[tile_in_move_list].position.y - 1][tiles_can_move_down[tile_in_move_list].position.x] = drop_tile
-        #             self.tile_matrix[tiles_can_move_down[tile_in_move_list].position.y][tiles_can_move_down[tile_in_move_list].position.x] = None
-        #
-        #             break
-        print("----------------------")
+            # for tile_in_move_list in range(len(tiles_can_move_down)):
+            #     stop = (self.tile_matrix[tiles_can_move_down[tile_in_move_list].position.y - 1][tiles_can_move_down[tile_in_move_list].position.x] is not None) or (tiles_can_move_down[tile_in_move_list].position.y != 0) or (self.tile_matrix[tiles_can_move_down[tile_in_move_list].position.y][tiles_can_move_down[tile_in_move_list].position.x - 1] is not None) or (self.tile_matrix[tiles_can_move_down[tile_in_move_list].position.y][tiles_can_move_down[tile_in_move_list].position.x + 1] is not None)
+            #     while stop:
+            #         drop_tile = self.tile_matrix[tiles_can_move_down[tile_in_move_list].position.y][tiles_can_move_down[tile_in_move_list].position.x]
+            #         self.tile_matrix[tiles_can_move_down[tile_in_move_list].position.y - 1][tiles_can_move_down[tile_in_move_list].position.x] = drop_tile
+            #         self.tile_matrix[tiles_can_move_down[tile_in_move_list].position.y][tiles_can_move_down[tile_in_move_list].position.x] = None
+            #
+            #         break
 
     def delete_tiles_2048(self):
 
@@ -163,26 +103,18 @@ class GameGrid:
                 tiles_can_move_down.append(self.tile_matrix[tiles[tile].position.y][tiles[tile].position.x])
 
         for del_tiles in range(len(tiles_can_move_down)):
-            self.tile_matrix[tiles_can_move_down[del_tiles].position.y][
-                tiles_can_move_down[del_tiles].position.x] = None
+            self.tile_matrix[tiles_can_move_down[del_tiles].position.y][tiles_can_move_down[del_tiles].position.x] = None
+
+
+
+
+
+
 
         # for x in range(len(tiles_can_move_down)):
         #     print(tiles_can_move_down[x].position)
         # print("---------")
         # print("---------")
-
-    def tile_drop(self, tile_list):
-        tiles = tile_list
-        for tile in range(len(tiles)):
-            if self.tile_matrix[tiles[tile].position.y - 1][tiles[tile].position.x] is None:
-                # Alttaki cell boş orayı tail ile doldururuz
-                self.tile_matrix[tiles[tile].position.y - 1][tiles[tile].position.x].position = Point()
-                self.tile_matrix[tiles[tile].position.y - 1][tiles[tile].position.x].position.x = self.tile_matrix[tiles[tile].position.y][tiles[tile].position.x].position.x
-                self.tile_matrix[tiles[tile].position.y - 1][tiles[tile].position.x].position.y = self.tile_matrix[tiles[tile].position.y][tiles[tile].position.x].position.y
-                self.tile_matrix[tiles[tile].position.y - 1][tiles[tile].position.x].position.y -= 1
-
-                self.tile_matrix[tiles[tile].position.y - 1][tiles[tile].position.x] = self.tile_matrix[tiles[tile].position.y][tiles[tile].position.x]
-                self.tile_matrix[tiles[tile].position.y][tiles[tile].position.x] = None
 
     def piece_drop(self):
         while self.current_tetromino.can_be_moved("down", self):
@@ -229,6 +161,69 @@ class GameGrid:
 
         return tiles
 
+
+    def tile_array_to_binary(self):
+        (row,column)=self.tile_matrix.shape
+        tile_arr_binary = np.full((row,column),0)
+        for i in range(row):
+            for j in (range(column)):
+                if self.tile_matrix[i][j] != None:
+                    tile_arr_binary[i][j]=1
+
+        return tile_arr_binary
+
+    def connected_component(self,list):
+        #list=self.tile_array_to_binary()
+        list_height= self.grid_height
+        list_width= self.grid_width
+        # list_height = list.shape[0]
+        # list_width = list.shape[1]
+
+        background = 0
+        curr_object = 0
+        equivalency_list = {}
+
+        for a in range(list_height):
+            for b in range(list_width):
+                if list[a][b] != background:
+
+                    if a > 0:
+                        # look at tile above
+                        tile_above = list[a - 1][b]
+
+                    if b > 0:
+                        # look at tile before
+                        tile_before = list[a][b - 1]
+
+                    if tile_above != background and tile_before != background:
+                        classification = min(tile_above, tile_before)
+                        equivalency_list[max(tile_above, tile_before)] = classification
+                    elif tile_above != background:
+                        classification = tile_above
+                    elif tile_before != background:
+                        classification = tile_before
+                    else:
+                        # assign a new label
+                        curr_object += 1
+                        equivalency_list[curr_object] = curr_object
+                        classification = curr_object
+
+                    list[a][b] = classification
+
+        # update classifications based on equivalency list
+        for a in range(list_height):
+            for b in range(list_width):
+                if list[a][b] != background:
+                    new_value = equivalency_list[list[a][b]]
+                    list[a][b] = new_value
+
+        print("New Labeled List: " + str(list))
+        print("Equivalency List: " + str(equivalency_list))
+
+
+
+
+
     # Method used for displaying the game grid
     def display(self):
         # clear the background to empty_cell_color
@@ -245,9 +240,9 @@ class GameGrid:
         # draw next tetromino
         show_next_tetromino(self.tetromino_list)
 
-        self.clear_full_lines()
+        # self.merge()
 
-        self.merge_2()
+        self.clear_full_lines()
 
         # draw a box around the game grid
         self.draw_boundaries()
@@ -328,3 +323,6 @@ class GameGrid:
                         self.game_over = True
         # return the game_over flag
         return self.game_over
+
+
+

@@ -108,7 +108,7 @@ def start():
             tetromino_list.pop(0)
             tetromino_list.append(create_tetromino(grid_h, grid_w))
 
-            binary_tile_arr= grid.tile_array_to_binary()
+            grid.tile_array_to_binary()
             #grid.connected_component(binary_tile_arr)
 
         # display the game grid and the current tetromino
