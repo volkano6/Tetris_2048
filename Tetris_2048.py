@@ -98,6 +98,7 @@ def start():
             if game_over:
                 break
 
+            grid.merge()
             # create the next tetromino to enter the game grid
             # by using the create_tetromino function defined below
             current_tetromino = tetromino_list[0]
@@ -106,8 +107,7 @@ def start():
             # First value of "tetromino_list" is used. This part update tetrominoes list.
             tetromino_list.pop(0)
             tetromino_list.append(create_tetromino(grid_h, grid_w))
-            print("------------------")
-            print(grid.tile_matrix)
+
         # display the game grid and the current tetromino
         grid.display()
 
@@ -118,7 +118,7 @@ def start():
 # Function for creating random shaped tetrominoes to enter the game grid
 def create_tetromino(grid_height, grid_width):
     # type (shape) of the tetromino is determined randomly
-    tetromino_types = ['O'] #'I', 'O', 'Z', 'S', 'T', 'L', 'J'
+    tetromino_types = ['I', 'O', 'Z', 'S', 'T', 'L', 'J']
     random_index = random.randint(0, len(tetromino_types) - 1)
     random_type = tetromino_types[random_index]
     # create and return the tetromino

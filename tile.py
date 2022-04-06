@@ -20,7 +20,6 @@ class Tile:
         self.position.x = None
         self.position.y = None
 
-
         random_list = [2, 4]
         x = random.choice(random_list)
         if x == 2:
@@ -34,6 +33,48 @@ class Tile:
         else:
             # set the number on the tile
             self.number = 4
+            # set the colors of the tile
+            self.background_color = Color(100, 190, 200)  # background (tile) color
+            self.foreground_color = Color(0, 0, 128)  # foreground (number) color
+            self.box_color = Color(0, 0, 128)  # box (boundary) color
+
+    def tile_value_for_merge(self, value):
+
+        if value == 4:
+            # set the number on the tile
+            self.number = 4
+            # set the colors of the tile
+            self.background_color = Color(100, 190, 200)  # background (tile) color
+            self.foreground_color = Color(0, 0, 128)  # foreground (number) color
+            self.box_color = Color(0, 0, 128)  # box (boundary) color
+
+        elif value == 8:
+            # set the number on the tile
+            self.number = 8
+            # set the colors of the tile
+            self.background_color = Color(100, 190, 50)  # background (tile) color
+            self.foreground_color = Color(0, 0, 0)  # foreground (number) color
+            self.box_color = Color(0, 0, 128)  # box (boundary) color
+
+        elif value == 16:
+            # set the number on the tile
+            self.number = 8
+            # set the colors of the tile
+            self.background_color = Color(200, 190, 200)  # background (tile) color
+            self.foreground_color = Color(0, 0, 128)  # foreground (number) color
+            self.box_color = Color(0, 0, 0)  # box (boundary) color
+
+        elif value == 32:
+            # set the number on the tile
+            self.number = 8
+            # set the colors of the tile
+            self.background_color = Color(100, 190, 200)  # background (tile) color
+            self.foreground_color = Color(0, 0, 128)  # foreground (number) color
+            self.box_color = Color(0, 0, 128)  # box (boundary) color
+
+        elif value == 64:
+            # set the number on the tile
+            self.number = 8
             # set the colors of the tile
             self.background_color = Color(100, 190, 200)  # background (tile) color
             self.foreground_color = Color(0, 0, 128)  # foreground (number) color

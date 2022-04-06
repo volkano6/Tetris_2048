@@ -1,5 +1,5 @@
 import lib.stddraw as stddraw  # stddraw is used as a basic graphics library
-import tetromino
+from tile import Tile
 
 from lib.color import Color  # used for coloring the game grid
 from point import Point  # used for tile positions
@@ -41,11 +41,66 @@ class GameGrid:
         self.line_thickness = 0.002
         self.box_thickness = 2 * self.line_thickness
 
+    def merge(self):
+
+        tiles = self.find_all_tiles_position()
+
+        for tile in reversed(range(len(tiles))):  # Tileler arasında büyükten küçüğe dolaş
+            # sıradaki tile path
+            current_tile = self.tile_matrix[tiles[tile].position.y][tiles[tile].position.x]
+            # eğer ilk satırda değilsek devam et
+            if current_tile.position.y != 0:
+                # current tilenin altındaki tile pathı
+                bottom_tile = self.tile_matrix[tiles[tile].position.y - 1][tiles[tile].position.x]
+                # eğer none değilse konum ataması yap
+                if bottom_tile is not None:
+                    # Alttaki cell boş orayı tail ile doldururuz
+                    bottom_tile.position = Point()
+                    bottom_tile.position.x = current_tile.position.x
+                    bottom_tile.position.y = current_tile.position.y
+                    bottom_tile.position.y -= 1
+
+                    # eğer numberları aynı ise merge işlemini gerçekleştir
+                    if current_tile.number == bottom_tile.number:
+                        bottom_tile.tile_value_for_merge(current_tile.number + bottom_tile.number)
+                        self.tile_matrix[tiles[tile].position.y][tiles[tile].position.x] = None
+                        self.drop_tiles_2048()
+
+    def drop_tiles_2048(self):
+
+        tiles = self.find_all_tiles_position()
+        tiles_can_move_down = []
+
+        # for tile in range(len(tiles)):
+        #
+        #     if (self.tile_matrix[tiles[tile].position.y - 1][tiles[tile].position.x] is None) and (tiles[tile].position.y != 0) and (self.tile_matrix[tiles[tile].position.y][tiles[tile].position.x - 1] is None) and (self.tile_matrix[tiles[tile].position.y][tiles[tile].position.x + 1] is None):
+        #         tiles_can_move_down.append(self.tile_matrix[tiles[tile].position.y][tiles[tile].position.x])
+        #
+        #     for tile_in_move_list in range(len(tiles_can_move_down)):
+        #         stop = (self.tile_matrix[tiles_can_move_down[tile_in_move_list].position.y - 1][tiles_can_move_down[tile_in_move_list].position.x] is not None) or (tiles_can_move_down[tile_in_move_list].position.y != 0) or (self.tile_matrix[tiles_can_move_down[tile_in_move_list].position.y][tiles_can_move_down[tile_in_move_list].position.x - 1] is not None) or (self.tile_matrix[tiles_can_move_down[tile_in_move_list].position.y][tiles_can_move_down[tile_in_move_list].position.x + 1] is not None)
+        #         while stop:
+        #             drop_tile = self.tile_matrix[tiles_can_move_down[tile_in_move_list].position.y][tiles_can_move_down[tile_in_move_list].position.x]
+        #             self.tile_matrix[tiles_can_move_down[tile_in_move_list].position.y - 1][tiles_can_move_down[tile_in_move_list].position.x] = drop_tile
+        #             self.tile_matrix[tiles_can_move_down[tile_in_move_list].position.y][tiles_can_move_down[tile_in_move_list].position.x] = None
+        #
+        #             break
+
+
+
+
+
+
+
+        # for x in range(len(tiles_can_move_down)):
+        #     print(tiles_can_move_down[x].position)
+        # print("---------")
+        # print("---------")
+
     def piece_drop(self):
         while self.current_tetromino.can_be_moved("down", self):
             self.current_tetromino.bottom_left_cell.y -= 1
 
-    # Write commend ,
+    # Write commend
     def clear_full_lines(self):
         for row in range(self.grid_height):
             full_cell = 0
@@ -55,9 +110,19 @@ class GameGrid:
                 if full_cell >= 12:
                     for row2 in range(self.grid_width):
                         self.tile_matrix[row][row2] = None
-                    self.drop_tile(row)
+                    self.drop_tiles_tetris(row)
 
-    def drop_tile(self, upThisrRow):
+    def drop_tiles_tetris(self, upThisrRow):
+
+        tiles = self.find_all_tiles_position(upThisrRow)
+
+        # ANA MATRİKSTEKİ TİLELERİN KONUMUNU BİRER AŞAĞI İNDİRİR
+        for value in range(len(tiles)):
+            a = self.tile_matrix[tiles[value].position.y][tiles[value].position.x]
+            self.tile_matrix[tiles[value].position.y - 1][tiles[value].position.x] = a
+            self.tile_matrix[tiles[value].position.y][tiles[value].position.x] = None
+
+    def find_all_tiles_position(self, upThisrRow=0):
         tiles = []
         tiles_position = []
 
@@ -74,12 +139,7 @@ class GameGrid:
             tiles[current_tile].position.x = tiles_position[current_tile].x
             tiles[current_tile].position.y = tiles_position[current_tile].y
 
-
-        # ANA MATRİKSTEKİ TİLELERİN KONUMUNU BİRER AŞAĞI İNDİRİR
-        for value in range(len(tiles)):
-            a = self.tile_matrix[tiles[value].position.y][tiles[value].position.x]
-            self.tile_matrix[tiles[value].position.y - 1][tiles[value].position.x] = a
-            self.tile_matrix[tiles[value].position.y][tiles[value].position.x] = None
+        return tiles
 
     # Method used for displaying the game grid
     def display(self):
@@ -97,12 +157,14 @@ class GameGrid:
         # draw next tetromino
         show_next_tetromino(self.tetromino_list)
 
+        # self.merge()
+
         self.clear_full_lines()
 
         # draw a box around the game grid
         self.draw_boundaries()
         # show the resulting drawing with a pause duration = 250 ms
-        stddraw.show(150)
+        stddraw.show(300)
 
     # Method for drawing the cells and the lines of the game grid
     def draw_grid(self):
