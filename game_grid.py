@@ -8,14 +8,15 @@ import numpy as np  # fundamental Python module for scientific computing
 
 # Class used for modelling the game grid
 def print_score():
-    stddraw.setPenColor(stddraw.GRAY)
+    stddraw.setPenColor(stddraw.BLACK)
     stddraw.boldText(14, 19, "SCORE")
+
 
 
 # draw next tetromino on the right bottom of game grid.
 def show_next_tetromino(arr):
     # draw title
-    stddraw.boldText(13.8, 5, "NEXT TETROMINO")
+    stddraw.boldText(14, 5, "NEXT TETROMINO")
     arr[0].draw_next_tetromino()
 
 
@@ -33,13 +34,14 @@ class GameGrid:
         # the game_over flag shows whether the game is over or not
         self.game_over = False
         # set the color used for the empty grid cells
-        self.empty_cell_color = Color(42, 69, 99)
+        self.empty_cell_color = Color(204, 192, 179)
         # set the colors used for the grid lines and the grid boundaries
-        self.line_color = Color(0, 100, 200)
-        self.boundary_color = Color(0, 100, 200)
+        self.line_color = Color(187, 173, 160)
+        self.boundary_color = Color(187, 173, 160)
         # thickness values used for the grid lines and the boundaries
-        self.line_thickness = 0.002
-        self.box_thickness = 2 * self.line_thickness
+        self.line_thickness = 0.008
+        self.box_thickness = 1 * self.line_thickness
+        self.score=0
 
     def merge(self):
 
@@ -104,6 +106,7 @@ class GameGrid:
 
     # Method used for displaying the game grid
     def display(self):
+        stddraw.boldText(14, 19, str(self.score))
         # clear the background to empty_cell_color
         stddraw.clear(self.empty_cell_color)
         # draw the game grid
@@ -156,7 +159,7 @@ class GameGrid:
         stddraw.setPenRadius(self.box_thickness)
         # the coordinates of the bottom left corner of the game grid
         pos_x, pos_y = -0.5, -0.5
-        stddraw.rectangle(pos_x, pos_y, self.grid_width, self.grid_height)
+        stddraw.rectangle(pos_x, pos_y, self.grid_width+0.03, self.grid_height)
         stddraw.setPenRadius()  # reset the pen radius to its default value
 
     # Method used for checking whether the grid cell with given row and column
@@ -345,6 +348,7 @@ class GameGrid:
         for row in range(self.grid_height):
             full_cell = 0
             for col in range(self.grid_width):
+
                 if self.tile_matrix[row][col] is not None:
                     full_cell += 1
                 if full_cell >= 12:

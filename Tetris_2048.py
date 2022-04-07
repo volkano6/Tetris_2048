@@ -11,7 +11,7 @@ import random  # used for creating tetrominoes with random types/shapes
 # -------------------------------------------------------------------------------
 # Main function where this program starts execution
 def start():
-    # set the dimensions of the game grid
+    # set the dimensions  of the game grid
     grid_h, grid_w = 20, 12
     # set the size of the drawing canvas
     canvas_h, canvas_w = 35 * grid_h, 45 * grid_w
