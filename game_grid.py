@@ -10,7 +10,7 @@ import numpy as np  # fundamental Python module for scientific computing
 def print_score():
     stddraw.setPenColor(stddraw.BLACK)
     stddraw.boldText(14, 19, "SCORE")
-
+    # stddraw.boldText(14, 19, str(self.total_score))
 
 
 # draw next tetromino on the right bottom of game grid.
@@ -28,6 +28,9 @@ class GameGrid:
         self.grid_width = grid_w
         # create a tile matrix to store the tiles landed onto the game grid
         self.tile_matrix = np.full((grid_h, grid_w), None)
+        #score
+        self.total_score = 0
+
         # create the te1tromino that is currently being moved on the game grid
         self.current_tetromino = None
         self.tetromino_list = None
@@ -41,12 +44,14 @@ class GameGrid:
         # thickness values used for the grid lines and the boundaries
         self.line_thickness = 0.008
         self.box_thickness = 1 * self.line_thickness
-        self.score=0
+
 
     def merge(self):
-
+        score = 0
+        #satır sütun dolaşır
         for row in range(self.grid_height):
             for col in range(self.grid_width):
+                # alt alta olan satırlar
                 current_tile = self.tile_matrix[row][col]
                 bottom_current_tile = self.tile_matrix[row - 1][col]
 
@@ -54,29 +59,51 @@ class GameGrid:
 
                     # eğer numberları aynı ise merge işlemini gerçekleştir
                     if current_tile.number == bottom_current_tile.number:
+                        score = current_tile.number + bottom_current_tile.number
                         bottom_current_tile.tile_value_for_merge(current_tile.number + bottom_current_tile.number)
                         self.tile_matrix[row][col] = None
-
-                        stddraw.show(20)
+                        self.total_score += score
+                        stddraw.show(50)
                         # method is droped same colm with merging
                         self.after_merge_col_drop(row, col)
 
                         # Labeling in here
-                        label_arr, equivalency_list = self.label_array(self.tile_array_to_binary())
-                        print(label_arr)
-                        # self.labeling_matrix(self.tile_array_to_binary(self.tile_matrix))
-                        # self.drop_labeling_tiles(label_arr, equivalency_list)
+                    label_arr, equivalency_list = self.label_array(self.tile_array_to_binary())
+
+                    self.drop_labeling_tiles(label_arr, equivalency_list)
+
 
     def drop_labeling_tiles(self, array_with_label, count_of_label):
 
-        length_of_list = len(count_of_label)
+        print(array_with_label)
+        print(count_of_label)
+        count = 0
+        will_drop_row = None
+        will_drop_col = None
 
-        for row in range(1, len(array_with_label)):
-            for col in range(len(array_with_label[0])):
-                a = array_with_label[row][col]
-                if array_with_label[row][col] != 0:
-                    if count_of_label[array_with_label[row][col]] == 1:
-                        print("drop")
+        # count of label in içinde gezer
+        for x in range(1, len(count_of_label)):
+
+            # matrikste gezer
+            for row in range(1, len(array_with_label)):
+                for col in range(len(array_with_label[0])):
+                    if array_with_label[row][col] == count_of_label[x]:
+                        self.tile_matrix[row][col] = None
+
+
+
+
+            #         #eğer label ile sıradaki değer aynı ise
+            #         if array_with_label[row][col] == count_of_label[x]:
+            #             count += 1
+            #             will_drop_row = row
+            #             will_drop_col = col
+            # print(count)
+            # if count < 2:
+            #     self.tile_matrix[will_drop_row-1][will_drop_col] = self.tile_matrix[will_drop_row][will_drop_col]
+            #     self.tile_matrix[will_drop_row][will_drop_col] = None
+            #     count = 0
+
 
     def after_merge_land_tiles_drop(self):
         count = 0
@@ -95,7 +122,7 @@ class GameGrid:
                                 for row_number in range(row):
 
                                     self.tile_matrix[row][col] = None
-                                    stddraw.show(120)
+                                    stddraw.show(50)
 
                                     if self.tile_matrix[row][col + 1] is not None or self.tile_matrix[row][
                                         col - 1] is not None:
@@ -106,7 +133,7 @@ class GameGrid:
 
     # Method used for displaying the game grid
     def display(self):
-        stddraw.boldText(14, 19, str(self.score))
+
         # clear the background to empty_cell_color
         stddraw.clear(self.empty_cell_color)
         # draw the game grid
@@ -221,7 +248,7 @@ class GameGrid:
                 a = self.tile_matrix[row + current_tile][col]
                 self.tile_matrix[row + current_tile - 1][col] = a
                 self.tile_matrix[row + current_tile][col] = None
-                stddraw.show(20)
+                stddraw.show(50)
 
     def tile_array_to_binary(self):
         # get the shape of the tile matrix
@@ -316,7 +343,7 @@ class GameGrid:
         im_origin_5 = np.delete(im_origin_4, len(im_origin_2[0])-2, 1)
 
         # return the labeled array, label list
-        return im_origin_5, len(labels)
+        return im_origin_5, labels
 
     def update_labeled_array(self, a, label1, label2):
         index = lab_small = lab_large = 0
@@ -345,16 +372,25 @@ class GameGrid:
 
     # Write commend
     def clear_full_lines(self):
+
+        score = 0
+        #satır sütun dolaşır
         for row in range(self.grid_height):
             full_cell = 0
             for col in range(self.grid_width):
 
                 if self.tile_matrix[row][col] is not None:
                     full_cell += 1
+                    score += self.tile_matrix[row][col].number
+                else:
+                    score = 0
+
                 if full_cell >= 12:
                     for row2 in range(self.grid_width):
                         self.tile_matrix[row][row2] = None
+                    self.total_score += score
                     self.drop_tiles_tetris(row)
+        print(self.total_score)
 
     def drop_tiles_tetris(self, upThisrRow):
 
