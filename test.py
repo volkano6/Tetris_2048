@@ -1,78 +1,62 @@
-import numpy
 import numpy as np
-import matplotlib.pyplot as plt
-
 
 
 if __name__ == "__main__":
 
-    #binary_tile_arr= numpy.array(list)
-
-    list = np.array([[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                                 [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                                 [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                                 [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                                 [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                                 [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                                 [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                                 [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                                 [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                                 [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                                 [0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0],
-                                 [0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0],
-                                 [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                                 [0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0],
-                                 [0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0],
-                                 [0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0],
-                                 [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0],
-                                 [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                                 [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                                 [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]])
-
-
+    img = np.array([[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                    [0, 1, 1, 1, 0, 0, 0, 0, 0, 0],
+                    [0, 1, 1, 1, 0, 0, 0, 0, 0, 0],
+                    [0, 1, 1, 1, 0, 0, 0, 0, 0, 0],
+                    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                    [0, 0, 0, 0, 1, 0, 0, 1, 1, 0],
+                    [0, 0, 0, 0, 1, 0, 0, 1, 1, 0],
+                    [0, 0, 0, 0, 1, 1, 1, 1, 1, 0],
+                    [0, 1, 1, 1, 1, 1, 1, 1, 1, 0],
+                    [0, 1, 1, 1, 1, 1, 1, 1, 1, 0],
+                    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]])
 
     # find image size
-    list_height = list.shape[0]
-    list_width = list.shape[1]
+    img_height = img.shape[0]
+    img_width = img.shape[1]
 
     background = 0
     curr_object = 0
     equivalency_list = {}
 
     # iterate through pixels and assign classifications
-    for a in range(list_height):
-        for b in range(list_width):
-            if list[a][b] != background:
+    for a in range(img_height):
+        for b in range(img_width):
+            if img[a][b] != background:
 
                 if a > 0:
                     # look at pixel above
-                    tile_above = list[a - 1][b]
+                    pixel_above = img[a - 1][b]
 
                 if b > 0:
                     # look at pixel before
-                    tile_before = list[a][b - 1]
+                    pixel_before = img[a][b - 1]
 
-                if tile_above != background and tile_before != background:
-                    classification = min(tile_above, tile_before)
-                    equivalency_list[max(tile_above, tile_before)] = classification
-                elif tile_above != background:
-                    classification = tile_above
-                elif tile_before != background:
-                    classification = tile_before
+                if pixel_above != background and pixel_before != background:
+                    classification = min(pixel_above, pixel_before)
+                    equivalency_list[max(pixel_above, pixel_before)] = classification
+                elif pixel_above != background:
+                    classification = pixel_above
+                elif pixel_before != background:
+                    classification = pixel_before
                 else:
                     # assign a new label
                     curr_object += 1
                     equivalency_list[curr_object] = curr_object
                     classification = curr_object
 
-                list[a][b] = classification
+                img[a][b] = classification
 
     # update classifications based on equivalency list
-    for a in range(list_height):
-        for b in range(list_width):
-            if list[a][b] != background:
-                new_value = equivalency_list[list[a][b]]
-                list[a][b] = new_value
+    for a in range(img_height):
+        for b in range(img_width):
+            if img[a][b] != background:
+                new_value = equivalency_list[img[a][b]]
+                img[a][b] = new_value
 
-    print("New Labeled List: " + str(list))
+    print("New Image: " + str(img))
     print("Equivalency List: " + str(equivalency_list))

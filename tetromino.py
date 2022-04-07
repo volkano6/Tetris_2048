@@ -256,12 +256,4 @@ class Tetromino:
             self.tile_matrix = flip_matrix
 
     def can_be_rotated(self):
-        position = Point()
-        if position.x < 0:
-            return False
-        if position.x >= self.grid_width:
-            return False
-        if game_grid.GameGrid.is_occupied(position.y, position.x):
-            return False
-        else:
-            return True
+        pass

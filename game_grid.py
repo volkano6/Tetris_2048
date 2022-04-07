@@ -1,5 +1,7 @@
 import numpy
 
+import tile
+import tile
 import lib.stddraw as stddraw  # stddraw is used as a basic graphics library
 from tile import Tile
 
@@ -45,148 +47,94 @@ class GameGrid:
 
     def merge(self):
 
-        tiles = self.find_all_tiles_position()
+        for row in range(self.grid_height):
+            for col in range(self.grid_width):
+                current_tile = self.tile_matrix[row][col]
+                bottom_current_tile = self.tile_matrix[row - 1][col]
 
-        for tile in reversed(range(len(tiles))):  # Tileler arasında büyükten küçüğe dolaş
-            # sıradaki tile path
-            current_tile = self.tile_matrix[tiles[tile].position.y][tiles[tile].position.x]
-            # eğer ilk satırda değilsek devam et
-            if current_tile.position.y != 0:
-                # current tilenin altındaki tile pathı
-                bottom_tile = self.tile_matrix[tiles[tile].position.y - 1][tiles[tile].position.x]
-                # eğer none değilse konum ataması yap
-                if bottom_tile is not None:
-                    # Alttaki cell boş orayı tail ile doldururuz
-                    bottom_tile.position = Point()
-                    bottom_tile.position.x = current_tile.position.x
-                    bottom_tile.position.y = current_tile.position.y
-                    bottom_tile.position.y -= 1
+                if self.tile_matrix[row - 1][col] is not None and self.tile_matrix[row][col] is not None:
 
                     # eğer numberları aynı ise merge işlemini gerçekleştir
-                    if current_tile.number == bottom_tile.number:
-                        bottom_tile.tile_value_for_merge(current_tile.number + bottom_tile.number)
-                        self.tile_matrix[tiles[tile].position.y][tiles[tile].position.x] = None
-                        #self.delete_tiles_2048()
+                    if current_tile.number == bottom_current_tile.number:
+                        bottom_current_tile.tile_value_for_merge(current_tile.number + bottom_current_tile.number)
+                        self.tile_matrix[row][col] = None
 
-    def drop_tiles_2048(self):
+                        stddraw.show(20)
+                        self.after_merge_col_drop(row, col)
+                        self.after_merge_land_tiles_drop()
+                        # array_with_label, count_of_label = self.label_array(self.tile_array_to_binary(self.tile_matrix))
 
-        tiles = self.find_all_tiles_position()
-        tiles_can_move_down = []
+    def after_merge_col_drop(self, row, col):
 
-        for tile in range(len(tiles)):
-            # tiles_can_move_down nın içi koşullara göre doldu
-            if (self.tile_matrix[tiles[tile].position.y - 1][tiles[tile].position.x] is None) and (tiles[tile].position.y != 0) and (self.tile_matrix[tiles[tile].position.y][tiles[tile].position.x - 1] is None) and (self.tile_matrix[tiles[tile].position.y][tiles[tile].position.x + 1] is None):
-                tiles_can_move_down.append(self.tile_matrix[tiles[tile].position.y][tiles[tile].position.x])
+        control_row_count = self.grid_height - (row + 1)
 
+        for current_tile in range(1, control_row_count):
+            if self.tile_matrix[row + current_tile][col] is not None:
+                a = self.tile_matrix[row + current_tile][col]
+                self.tile_matrix[row + current_tile - 1][col] = a
+                self.tile_matrix[row + current_tile][col] = None
+                stddraw.show(20)
 
-
-            # for tile_in_move_list in range(len(tiles_can_move_down)):
-            #     stop = (self.tile_matrix[tiles_can_move_down[tile_in_move_list].position.y - 1][tiles_can_move_down[tile_in_move_list].position.x] is not None) or (tiles_can_move_down[tile_in_move_list].position.y != 0) or (self.tile_matrix[tiles_can_move_down[tile_in_move_list].position.y][tiles_can_move_down[tile_in_move_list].position.x - 1] is not None) or (self.tile_matrix[tiles_can_move_down[tile_in_move_list].position.y][tiles_can_move_down[tile_in_move_list].position.x + 1] is not None)
-            #     while stop:
-            #         drop_tile = self.tile_matrix[tiles_can_move_down[tile_in_move_list].position.y][tiles_can_move_down[tile_in_move_list].position.x]
-            #         self.tile_matrix[tiles_can_move_down[tile_in_move_list].position.y - 1][tiles_can_move_down[tile_in_move_list].position.x] = drop_tile
-            #         self.tile_matrix[tiles_can_move_down[tile_in_move_list].position.y][tiles_can_move_down[tile_in_move_list].position.x] = None
-            #
-            #         break
-
-    def delete_tiles_2048(self):
-
-        tiles = self.find_all_tiles_position()
-        tiles_can_move_down = []
-
-        for tile in range(len(tiles)):
-            # tiles_can_move_down nın içi koşullara göre doldu
-            if (self.tile_matrix[tiles[tile].position.y - 1][tiles[tile].position.x] is None) and \
-                    (tiles[tile].position.y != 0) and \
-                    (self.tile_matrix[tiles[tile].position.y][tiles[tile].position.x - 1] is None) and \
-                    (self.tile_matrix[tiles[tile].position.y][tiles[tile].position.x + 1] is None):
-                tiles_can_move_down.append(self.tile_matrix[tiles[tile].position.y][tiles[tile].position.x])
-
-        for del_tiles in range(len(tiles_can_move_down)):
-            self.tile_matrix[tiles_can_move_down[del_tiles].position.y][tiles_can_move_down[del_tiles].position.x] = None
-
-
-
-
-
-
-
-        # for x in range(len(tiles_can_move_down)):
-        #     print(tiles_can_move_down[x].position)
-        # print("---------")
-        # print("---------")
-
-    def piece_drop(self):
-        while self.current_tetromino.can_be_moved("down", self):
-            self.current_tetromino.bottom_left_cell.y -= 1
-
-    # Write commend
-    def clear_full_lines(self):
+    def after_merge_land_tiles_drop(self):
+        count = 0
         for row in range(self.grid_height):
-            full_cell = 0
+
             for col in range(self.grid_width):
-                if self.tile_matrix[row][col] is not None:
-                    full_cell += 1
-                if full_cell >= 12:
-                    for row2 in range(self.grid_width):
-                        self.tile_matrix[row][row2] = None
-                    self.drop_tiles_tetris(row)
 
-    def drop_tiles_tetris(self, upThisrRow):
+                if self.is_inside_for_tile(row, col):
 
-        tiles = self.find_all_tiles_position(upThisrRow)
+                    if self.tile_matrix[row][col + 1] is None and self.tile_matrix[row][col - 1] is None:
 
-        # ANA MATRİKSTEKİ TİLELERİN KONUMUNU BİRER AŞAĞI İNDİRİR
-        for value in range(len(tiles)):
-            a = self.tile_matrix[tiles[value].position.y][tiles[value].position.x]
-            self.tile_matrix[tiles[value].position.y - 1][tiles[value].position.x] = a
-            self.tile_matrix[tiles[value].position.y][tiles[value].position.x] = None
+                        if self.tile_matrix[row + 1][col] is None and self.tile_matrix[row - 1][col] is None:
 
-    def find_all_tiles_position(self, upThisrRow=0):
-        tiles = []
-        tiles_position = []
+                            if self.tile_matrix[row][col] is not None:
 
-        # SİLİNEN KISMIN ÜST TARAFINDAKİ TİLE VE KONUMLARI BULUR VE TİLE ARRAYINE EKLER
-        for row in range(upThisrRow, self.grid_height):
-            for col in range(self.grid_width):
-                if self.is_occupied(row, col):
-                    tiles.append(self.tile_matrix[row][col])
-                    cell_point = Point()
-                    cell_point.x = col
-                    cell_point.y = row
-                    tiles_position.append(cell_point)
-        for current_tile in range(len(tiles)):
-            tiles[current_tile].position.x = tiles_position[current_tile].x
-            tiles[current_tile].position.y = tiles_position[current_tile].y
+                                for row_number in range(row):
 
-        return tiles
+                                    a = self.tile_matrix[row][col]
+                                    self.tile_matrix[row - 1][col] = a
 
 
-    def tile_array_to_binary(self):
-        (row,column)=self.tile_matrix.shape
-        tile_arr_binary = np.full((row,column),0)
-        for i in range(row):
-            for j in (range(column)):
-                if self.tile_matrix[i][j] != None:
-                    tile_arr_binary[i][j]=1
 
-        return tile_arr_binary
+                                    if self.tile_matrix[row][col + 1] is not None or self.tile_matrix[row][col - 1] is not None:
 
-    def connected_component(self,binarized):
-        max_label = int(100000)
-        row = binarized.shape[0]
-        column = binarized.shape[1]
+                                        if self.tile_matrix[row + 1][col] is not None or self.tile_matrix[row - 1][col] is not None:
+                                            pass
+
+
+
+
+    def move_tile_down(self, i, j):
+        index = 0
+        # loop until the bottom of the tile do not touch another tile or bottom
+        while True:
+            if self.tile_matrix[i - (index + 1)][j] == None and i - index != 0:
+                # move down the tile
+                self.tile_matrix[i - index][j].tile.move(0, -1)
+                self.tile_matrix[i - (index + 1)][j] = self.tile_matrix[i - index][j]
+                self.tile_matrix[i - index][j] = None
+                # display the canvas each time
+                index += 1
+            else:
+                break
+
+    # Method for labeling the binarized tile matrix to distinguish the tiles that are not connected to the bottom
+    # of the matrix
+    def label_array(self, binarized):
+        max_label = int(10000)
+        nrow = binarized.shape[0]
+        ncol = binarized.shape[1]
 
         # create a new array that will hold the labels and that has the same shape with the binarized array
-        im = np.full(shape=(row, column), dtype=int, fill_value=max_label)
+        im = np.full(shape=(nrow, ncol), dtype=int, fill_value=max_label)
 
         # create an label holder array
         a = np.arange(0, max_label, dtype=int)
 
         k = 0
         # start labeling by checking connected tiles
-        for i in range(1, row - 1):
-            for j in range(1, column - 1):
+        for i in range(1, nrow - 1):
+            for j in range(1, ncol - 1):
                 # get the related tiles
                 c = binarized[i][j]
                 label_u = im[i - 1][j]
@@ -226,17 +174,15 @@ class GameGrid:
         labels.pop(0)
 
         # second pass to resolve labels
-        for i in range(row):
-            for j in range(column):
+        for i in range(nrow):
+            for j in range(ncol):
                 if binarized[i][j] == 1 and im[i][j] != max_label:
                     im[i][j] = a[im[i][j]]
                 else:
                     im[i][j] = 0
 
-        print(im)
-        print(labels)
         # return the labeled array, label list
-        return im, len(labels)
+        return print(im), print(len(labels))
 
     def update_labeled_array(self, a, label1, label2):
         index = lab_small = lab_large = 0
@@ -259,6 +205,32 @@ class GameGrid:
             else:
                 break
 
+    def piece_drop(self):
+        while self.current_tetromino.can_be_moved("down", self):
+            self.current_tetromino.bottom_left_cell.y -= 1
+
+    # Write commend
+    def clear_full_lines(self):
+        for row in range(self.grid_height):
+            full_cell = 0
+            for col in range(self.grid_width):
+                if self.tile_matrix[row][col] is not None:
+                    full_cell += 1
+                if full_cell >= 12:
+                    for row2 in range(self.grid_width):
+                        self.tile_matrix[row][row2] = None
+                    self.drop_tiles_tetris(row)
+
+    def tile_array_to_binary(self, array):
+        (row, column) = array.shape
+        tile_arr_binary = np.full((row, column), 0)
+        for i in range(row):
+            for j in (range(column)):
+                if self.tile_matrix[i][j] != None:
+                    tile_arr_binary[i][j] = 1
+
+        return tile_arr_binary
+
     # Method used for displaying the game grid
     def display(self):
         # clear the background to empty_cell_color
@@ -277,14 +249,12 @@ class GameGrid:
 
         self.merge()
 
-        self.connected_component(self.tile_array_to_binary())
-
         self.clear_full_lines()
 
         # draw a box around the game grid
         self.draw_boundaries()
         # show the resulting drawing with a pause duration = 250 ms
-        stddraw.show(300)
+        stddraw.show(250)
 
     # Method for drawing the cells and the lines of the game grid
     def draw_grid(self):
@@ -337,6 +307,13 @@ class GameGrid:
             return False
         return True
 
+    def is_inside_for_tile(self,row, col):
+        if row < 1 or row >= self.grid_height - 1:
+            return False
+        if col < 1 or col >= self.grid_width - 1:
+            return False
+        return True
+
     # Method that locks the tiles of the landed tetromino on the game grid while
     # checking if the game is over due to having tiles above the topmost grid row.
     # The method returns True when the game is over and False otherwise.
@@ -360,6 +337,3 @@ class GameGrid:
                         self.game_over = True
         # return the game_over flag
         return self.game_over
-
-
-
