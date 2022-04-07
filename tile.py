@@ -13,6 +13,8 @@ class Tile:
     # font family and size used for displaying the tile number
     font_family, font_size = "Courier", 16
 
+
+
     # Constructor that creates a tile with 2 as the number on it
     def __init__(self):
 
