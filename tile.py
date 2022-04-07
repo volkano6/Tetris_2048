@@ -13,8 +13,6 @@ class Tile:
     # font family and size used for displaying the tile number
     font_family, font_size = "Courier", 16
 
-
-
     # Constructor that creates a tile with 2 as the number on it
     def __init__(self):
 
@@ -129,7 +127,7 @@ class Tile:
     def draw(self, position, length=1):
         # draw the tile as a filled square
         stddraw.setPenColor(self.background_color)
-        stddraw.filledSquare(position.x, position.y, length / 2)
+        stddraw.filledSquare(position.x , position.y, length / 2)
         # draw the bounding box around the tile as a square
         stddraw.setPenColor(self.box_color)
         stddraw.setPenRadius(Tile.boundary_thickness)
