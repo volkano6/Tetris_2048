@@ -56,9 +56,25 @@ class GameGrid:
                         self.tile_matrix[row][col] = None
 
                         stddraw.show(20)
+                        # method is droped same colm with merging
                         self.after_merge_col_drop(row, col)
-                        array_with_label, count_of_label = self.label_array(self.tile_array_to_binary(self.tile_matrix))
-                        self.drop_labeling_tiles(array_with_label, count_of_label)
+
+                        # Labeling in here
+                        label_arr, equivalency_list = self.label_array(self.tile_array_to_binary())
+                        print(label_arr)
+                        # self.labeling_matrix(self.tile_array_to_binary(self.tile_matrix))
+                        # self.drop_labeling_tiles(label_arr, equivalency_list)
+
+    def drop_labeling_tiles(self, array_with_label, count_of_label):
+
+        length_of_list = len(count_of_label)
+
+        for row in range(1, len(array_with_label)):
+            for col in range(len(array_with_label[0])):
+                a = array_with_label[row][col]
+                if array_with_label[row][col] != 0:
+                    if count_of_label[array_with_label[row][col]] == 1:
+                        print("drop")
 
     def after_merge_land_tiles_drop(self):
         count = 0
@@ -85,20 +101,6 @@ class GameGrid:
                                         if self.tile_matrix[row + 1][col] is not None or self.tile_matrix[row - 1][
                                             col] is not None:
                                             pass
-
-    def drop_labeling_tiles(self, array_with_label, count_of_label):
-        # [label_count][tiles have same label]
-        labeling_array = []
-        row = len(array_with_label)
-        column = len(array_with_label[0])
-
-        for r in range(row):
-            for c in range(column):
-                pass
-
-
-
-
 
     # Method used for displaying the game grid
     def display(self):
@@ -218,15 +220,26 @@ class GameGrid:
                 self.tile_matrix[row + current_tile][col] = None
                 stddraw.show(20)
 
-    def tile_array_to_binary(self, array):
-        (row, column) = array.shape
-        tile_arr_binary = np.full((row, column), 0)
-        for i in range(row):
-            for j in (range(column)):
-                if self.tile_matrix[i][j] != None:
-                    tile_arr_binary[i][j] = 1
+    def tile_array_to_binary(self):
+        # get the shape of the tile matrix
+        (nrows, ncols) = self.tile_matrix.shape
 
-        return tile_arr_binary
+        # create a new array filled with zeros that has the 2 more columns and 3 more rows
+        arr = np.full((nrows + 3, ncols + 2), 0)
+
+        # make a base line filled with ones to understand the tiles that are connected to bottom
+        arr[1] = np.full((1, ncols + 2), 1)
+        arr[1][0] = 0
+        arr[1][ncols + 1] = 0
+
+        # make the non-empty cells one
+        for i in range(nrows):
+            for j in range(ncols):
+                if self.tile_matrix[i][j] != None:
+                    arr[i + 2][j + 1] = 1
+
+        # return binarized array
+        return arr
 
     # Method for labeling the binarized tile matrix to distinguish the tiles that are not connected to the bottom
     # of the matrix
@@ -291,8 +304,16 @@ class GameGrid:
                 else:
                     im[i][j] = 0
 
+
+        #resize array
+        im_origin = np.delete(im, 0, 0)
+        im_origin_2 = np.delete(im_origin, 0, 0)
+        im_origin_3 = np.delete(im_origin_2, len(im_origin_2)-1, 0)
+        im_origin_4 = np.delete(im_origin_3, 0, 1)
+        im_origin_5 = np.delete(im_origin_4, len(im_origin_2[0])-2, 1)
+
         # return the labeled array, label list
-        return im, labels
+        return im_origin_5, len(labels)
 
     def update_labeled_array(self, a, label1, label2):
         index = lab_small = lab_large = 0
@@ -360,5 +381,55 @@ class GameGrid:
 
         return tiles
 
+    def labeling_matrix(self, arr):
 
+        label_array = copy.deepcopy(arr)
+        for x in range(label_array.shape[1]):
+            label_array[0][x] = 0
 
+        # find image size
+        img_height = label_array.shape[0]
+        img_width = label_array.shape[1]
+
+        background = 0
+        curr_object = 0
+        equivalency_list = {}
+
+        # iterate through pixels and assign classifications
+        for a in range(1, img_height):
+            for b in range(1, img_width):
+                if label_array[a][b] != background:
+
+                    if a > 0:
+                        # look at pixel above
+                        pixel_above = label_array[a - 1][b]
+
+                    if b > 0:
+                        # look at pixel before
+                        pixel_before = label_array[a][b - 1]
+
+                    if pixel_above != background and pixel_before != background:
+                        classification = min(pixel_above, pixel_before)
+                        equivalency_list[max(pixel_above, pixel_before)] = classification
+                    elif pixel_above != background:
+                        classification = pixel_above
+                    elif pixel_before != background:
+                        classification = pixel_before
+                    else:
+                        # assign a new label
+                        curr_object += 1
+                        equivalency_list[curr_object] = curr_object
+                        classification = curr_object
+
+                    label_array[a][b] = classification
+
+        # update classifications based on equivalency list
+        for a in range(img_height):
+            for b in range(img_width):
+                if label_array[a][b] != background:
+                    new_value = equivalency_list[label_array[a][b]]
+                    label_array[a][b] = new_value
+
+        print("New Image: " + str(label_array))
+        print("Equivalency List: " + str(equivalency_list))
+        return label_array, equivalency_list
