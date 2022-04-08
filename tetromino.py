@@ -96,7 +96,7 @@ class Tetromino:
 
     # Method that returns a copy of tile_matrix omitting empty rows and columns
     # and the position of the bottom left cell when return_position is set
-    def get_min_bounded_tile_matrix(self, return_position= False):
+    def get_min_bounded_tile_matrix(self, return_position=False):
         n = len(self.tile_matrix)  # n = number of rows = number of columns
         # determine rows and columns to copy (omit empty rows and columns)
         min_row, max_row, min_col, max_col = n - 1, 0, n - 1, 0
@@ -142,7 +142,7 @@ class Tetromino:
                         self.tile_matrix[row][col].draw(position)
 
     # Method for drawing the next tetromino on the game grid
-    def draw_next_tetromino(self):
+    def draw_next_tetromino(self, x, y):
         n = len(self.tile_matrix)  # n = number of rows = number of columns
         for row in range(n):
             for col in range(n):
@@ -150,13 +150,11 @@ class Tetromino:
                 if self.tile_matrix[row][col] is not None:
                     # get the position of the tile
                     position = Point()
-                    position.x = row + 12.7
-                    position.y = col + 1.5
+                    position.x = row + x
+                    position.y = col + y
                     # draw only the tiles that are inside the game grid
                     if position.y < self.grid_height:
                         self.tile_matrix[row][col].draw(position)
-
-
 
     # Method for moving the tetromino in a given direction by 1 on the game grid
     def move(self, direction, game_grid):

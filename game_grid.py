@@ -7,17 +7,27 @@ import numpy as np  # fundamental Python module for scientific computing
 
 
 # Class used for modelling the game grid
-def print_score():
-    stddraw.setPenColor(stddraw.BLACK)
-    stddraw.boldText(14, 19, "SCORE")
-    # stddraw.boldText(14, 19, str(self.total_score))
+
 
 
 # draw next tetromino on the right bottom of game grid.
 def show_next_tetromino(arr):
     # draw title
-    stddraw.boldText(14, 5, "NEXT TETROMINO")
-    arr[0].draw_next_tetromino()
+    stddraw.setFontSize(17)
+    stddraw.boldText(14.1, 9 , "NEXT TETROMINOS")
+
+    stddraw.setPenRadius(0.01)
+    stddraw.setPenColor(Color(137, 127, 110))
+    stddraw.rectangle(12, 5.4, 4.2, 3.2)
+    arr[0].draw_next_tetromino(12.6, 6)
+
+    stddraw.setPenRadius(0.01)
+    stddraw.setPenColor(Color(137, 127, 110))
+    stddraw.rectangle(12, 1.4, 4.2, 3.2)
+
+
+    arr[1].draw_next_tetromino(12.6, 2)
+
 
 
 class GameGrid:
@@ -40,7 +50,7 @@ class GameGrid:
         self.empty_cell_color = Color(204, 192, 179)
         # set the colors used for the grid lines and the grid boundaries
         self.line_color = Color(187, 173, 160)
-        self.boundary_color = Color(187, 173, 160)
+        self.boundary_color = Color(157, 143, 130)
         # thickness values used for the grid lines and the boundaries
         self.line_thickness = 0.008
         self.box_thickness = 1 * self.line_thickness
@@ -59,7 +69,7 @@ class GameGrid:
 
                     # eğer numberları aynı ise merge işlemini gerçekleştir
                     if current_tile.number == bottom_current_tile.number:
-                        score = current_tile.number + bottom_current_tile.number
+                        score = self.tile_matrix[row][col].number + self.tile_matrix[row - 1][col].number
                         bottom_current_tile.tile_value_for_merge(current_tile.number + bottom_current_tile.number)
                         self.tile_matrix[row][col] = None
                         self.total_score += score
@@ -105,33 +115,18 @@ class GameGrid:
             #     count = 0
 
 
-    def after_merge_land_tiles_drop(self):
-        count = 0
-        for row in range(self.grid_height):
+    def print_score(self):
 
-            for col in range(self.grid_width):
+        stddraw.setPenColor(Color(137, 127, 110))
+        stddraw.setPenRadius(0.01)
+        stddraw.rectangle(12, 17.3, 4.2, 2)
+        stddraw.setPenColor(stddraw.BLACK)
 
-                if self.is_inside_for_tile(row, col):
+        stddraw.setFontSize(17)
+        stddraw.boldText(14, 19, "SCORE")
+        stddraw.boldText(14, 18, str(self.total_score))
 
-                    if self.tile_matrix[row][col + 1] is None and self.tile_matrix[row][col - 1] is None:
-
-                        if self.tile_matrix[row + 1][col] is None and self.tile_matrix[row - 1][col] is None:
-
-                            if self.tile_matrix[row][col] is not None:
-
-                                for row_number in range(row):
-
-                                    self.tile_matrix[row][col] = None
-                                    stddraw.show(50)
-
-                                    if self.tile_matrix[row][col + 1] is not None or self.tile_matrix[row][
-                                        col - 1] is not None:
-
-                                        if self.tile_matrix[row + 1][col] is not None or self.tile_matrix[row - 1][
-                                            col] is not None:
-                                            pass
-
-    # Method used for displaying the game grid
+    # Method used for displa ying the game grid
     def display(self):
 
         # clear the background to empty_cell_color
@@ -144,7 +139,7 @@ class GameGrid:
             self.current_tetromino.draw()
 
         # draw SCORE board
-        print_score()
+        self.print_score()
         # draw next tetromino
         show_next_tetromino(self.tetromino_list)
 
@@ -385,12 +380,11 @@ class GameGrid:
                 else:
                     score = 0
 
-                if full_cell >= 12:
+                if full_cell >= self.grid_width:
                     for row2 in range(self.grid_width):
                         self.tile_matrix[row][row2] = None
                     self.total_score += score
                     self.drop_tiles_tetris(row)
-        print(self.total_score)
 
     def drop_tiles_tetris(self, upThisrRow):
 
