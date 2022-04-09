@@ -352,7 +352,7 @@ class GameGrid:
 
         score = 0
         # satır sütun dolaşır
-        for row in range(self.grid_height):
+        for row in range(1, self.grid_height):
             full_cell = 0
             for col in range(self.grid_width):
 
