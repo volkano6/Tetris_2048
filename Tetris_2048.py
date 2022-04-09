@@ -116,7 +116,7 @@ def start():
 
     # print a message on the console when the game is over
     print("Game over")
-    display_game_over(grid_h,grid_w)
+    display_game_over(grid_h, grid_w)
 # Function for displaying a simple menu before starting the game
 def display_game_menu(grid_height, grid_width):
     # colors used for the menu
