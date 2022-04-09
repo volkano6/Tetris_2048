@@ -44,10 +44,9 @@ def start():
     tetromino_list.pop(0)
     tetromino_list.append(create_tetromino(grid_h, grid_w))
 
-
     # display a simple menu before opening    game
     # by using the display_game_menu function defined below
-    #display_game_menu(grid_h, grid_w + 3)
+    display_game_menu(grid_h, grid_w + 3)
 
     clock_direction = True
     # the main game loop (keyboard interaction for moving the tetromino)
@@ -80,6 +79,8 @@ def start():
                 # move the active tetromino's rotate change
                 grid.current_tetromino.rotate_tertromino(grid, clock_direction)
             # clear the queue of the pressed keys for a smoother interaction
+            elif key_typed == "escape":
+                print("escape")
             elif key_typed == "space":
                 # move the active tetromino drop
                 # (drop: causes the tetromino to fall to the deepest place )
@@ -116,7 +117,9 @@ def start():
 
     # print a message on the console when the game is over
     print("Game over")
-    display_game_menu(grid_h,grid_w)
+    display_game_menu(grid_h, grid_w)
+
+
 # Function for displaying a simple menu before starting the game
 def display_game_menu(grid_height, grid_width):
     # colors used for the menu
@@ -130,7 +133,7 @@ def display_game_menu(grid_height, grid_width):
     # path of the image file
     img_file = current_dir + "/images/menu_image.png"
     # center coordinates to display the image
-    img_center_x, img_center_y = (grid_width - 1) / 2, grid_height - 7
+    img_center_x, img_center_y = (grid_width + 0.5) / 2, grid_height - 8
     # image is represented using the Picture class
     image_to_display = Picture(img_file)
     # display the image
