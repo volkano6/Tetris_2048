@@ -47,7 +47,7 @@ def start():
 
     # display a simple menu before opening    game
     # by using the display_game_menu function defined below
-    display_game_menu(grid_h, grid_w+5)
+    # display_game_menu(grid_h, grid_w+5)
 
     clock_direction = True
     # the main game loop (keyboard interaction for moving the tetromino)
