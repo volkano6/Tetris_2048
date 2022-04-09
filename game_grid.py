@@ -9,12 +9,11 @@ import numpy as np  # fundamental Python module for scientific computing
 # Class used for modelling the game grid
 
 
-
 # draw next tetromino on the right bottom of game grid.
 def show_next_tetromino(arr):
     # draw title
     stddraw.setFontSize(17)
-    stddraw.boldText(14.1, 9 , "NEXT TETROMINOS")
+    stddraw.boldText(14.1, 9, "NEXT TETROMINOS")
 
     stddraw.setPenRadius(0.01)
     stddraw.setPenColor(Color(137, 127, 110))
@@ -25,9 +24,7 @@ def show_next_tetromino(arr):
     stddraw.setPenColor(Color(137, 127, 110))
     stddraw.rectangle(12, 1.4, 4.2, 3.2)
 
-
     arr[1].draw_next_tetromino(12.6, 2)
-
 
 
 class GameGrid:
@@ -38,7 +35,7 @@ class GameGrid:
         self.grid_width = grid_w
         # create a tile matrix to store the tiles landed onto the game grid
         self.tile_matrix = np.full((grid_h, grid_w), None)
-        #score
+        # score
         self.total_score = 0
 
         # create the te1tromino that is currently being moved on the game grid
@@ -55,10 +52,9 @@ class GameGrid:
         self.line_thickness = 0.008
         self.box_thickness = 1 * self.line_thickness
 
-
     def merge(self):
         score = 0
-        #satır sütun dolaşır
+        # satır sütun dolaşır
         for row in range(self.grid_height):
             for col in range(self.grid_width):
                 # alt alta olan satırlar
@@ -70,6 +66,7 @@ class GameGrid:
                     # eğer numberları aynı ise merge işlemini gerçekleştir
                     if current_tile.number == bottom_current_tile.number:
                         score = self.tile_matrix[row][col].number + self.tile_matrix[row - 1][col].number
+
                         bottom_current_tile.tile_value_for_merge(current_tile.number + bottom_current_tile.number)
                         self.tile_matrix[row][col] = None
                         self.total_score += score
@@ -82,14 +79,8 @@ class GameGrid:
 
                     self.drop_labeling_tiles(label_arr, equivalency_list)
 
-
     def drop_labeling_tiles(self, array_with_label, count_of_label):
 
-        print(array_with_label)
-        print(count_of_label)
-        count = 0
-        will_drop_row = None
-        will_drop_col = None
 
         # count of label in içinde gezer
         for x in range(1, len(count_of_label)):
@@ -97,22 +88,14 @@ class GameGrid:
             # matrikste gezer
             for row in range(1, len(array_with_label)):
                 for col in range(len(array_with_label[0])):
+
                     if array_with_label[row][col] == count_of_label[x]:
-                        self.tile_matrix[row][col] = None
+
+                            a = self.tile_matrix[row][col]
+                            self.tile_matrix[row - 1][col] = a
+                            self.tile_matrix[row][col] = None
 
 
-
-
-            #         #eğer label ile sıradaki değer aynı ise
-            #         if array_with_label[row][col] == count_of_label[x]:
-            #             count += 1
-            #             will_drop_row = row
-            #             will_drop_col = col
-            # print(count)
-            # if count < 2:
-            #     self.tile_matrix[will_drop_row-1][will_drop_col] = self.tile_matrix[will_drop_row][will_drop_col]
-            #     self.tile_matrix[will_drop_row][will_drop_col] = None
-            #     count = 0
 
 
     def print_score(self):
@@ -181,7 +164,7 @@ class GameGrid:
         stddraw.setPenRadius(self.box_thickness)
         # the coordinates of the bottom left corner of the game grid
         pos_x, pos_y = -0.5, -0.5
-        stddraw.rectangle(pos_x, pos_y, self.grid_width+0.03, self.grid_height)
+        stddraw.rectangle(pos_x, pos_y, self.grid_width + 0.03, self.grid_height)
         stddraw.setPenRadius()  # reset the pen radius to its default value
 
     # Method used for checking whether the grid cell with given row and column
@@ -329,13 +312,12 @@ class GameGrid:
                 else:
                     im[i][j] = 0
 
-
-        #resize array
+        # resize array
         im_origin = np.delete(im, 0, 0)
         im_origin_2 = np.delete(im_origin, 0, 0)
-        im_origin_3 = np.delete(im_origin_2, len(im_origin_2)-1, 0)
+        im_origin_3 = np.delete(im_origin_2, len(im_origin_2) - 1, 0)
         im_origin_4 = np.delete(im_origin_3, 0, 1)
-        im_origin_5 = np.delete(im_origin_4, len(im_origin_2[0])-2, 1)
+        im_origin_5 = np.delete(im_origin_4, len(im_origin_2[0]) - 2, 1)
 
         # return the labeled array, label list
         return im_origin_5, labels
@@ -369,7 +351,7 @@ class GameGrid:
     def clear_full_lines(self):
 
         score = 0
-        #satır sütun dolaşır
+        # satır sütun dolaşır
         for row in range(self.grid_height):
             full_cell = 0
             for col in range(self.grid_width):
@@ -467,3 +449,5 @@ class GameGrid:
         print("New Image: " + str(label_array))
         print("Equivalency List: " + str(equivalency_list))
         return label_array, equivalency_list
+
+
