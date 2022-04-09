@@ -63,7 +63,7 @@ class GameGrid:
 
                 if self.tile_matrix[row - 1][col] is not None and self.tile_matrix[row][col] is not None:
 
-                    # eğer numberları aynı ise merge işlemini gerçekleştir
+                    # eğer numberları aynı ise merge işlemini gerçekleştir.
                     if current_tile.number == bottom_current_tile.number:
                         score = self.tile_matrix[row][col].number + self.tile_matrix[row - 1][col].number
 
