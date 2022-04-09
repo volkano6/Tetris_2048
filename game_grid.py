@@ -16,15 +16,26 @@ def show_next_tetromino(arr):
     stddraw.boldText(14.1, 9, "NEXT TETROMINOS")
 
     stddraw.setPenRadius(0.01)
-    stddraw.setPenColor(Color(201,201,201))
+    stddraw.setPenColor(Color(201, 201, 201))
     stddraw.rectangle(12, 5.4, 4.2, 3.2)
     arr[0].draw_next_tetromino(12.6, 6)
 
     stddraw.setPenRadius(0.01)
-    stddraw.setPenColor(Color(201,201,201))
+    stddraw.setPenColor(Color(201, 201, 201))
     stddraw.rectangle(12, 1.4, 4.2, 3.2)
 
     arr[1].draw_next_tetromino(12.6, 2)
+
+
+def show_options():
+    stddraw.setFontSize(17)
+    stddraw.boldText(14.1, 15, "Press 'R' to Restart")
+    stddraw.boldText(14.1, 14, "Press 'E' to Exit")
+    stddraw.boldText(14.1, 13, "Press 'P' to Pause")
+
+    stddraw.setPenRadius(0.01)
+    stddraw.setPenColor(Color(201, 201, 201))
+    stddraw.rectangle(12, 12.4, 4.2, 3.2)
 
 
 class GameGrid:
@@ -44,10 +55,10 @@ class GameGrid:
         # the game_over flag shows whether the game is over or not
         self.game_over = False
         # set the color used for the empty grid cells
-        self.empty_cell_color = Color(238,238,238)
+        self.empty_cell_color = Color(238, 238, 238)
         # set the colors used for the grid lines and the grid boundaries
-        self.line_color = Color(221,221,221)
-        self.boundary_color = Color(201,201,201)
+        self.line_color = Color(221, 221, 221)
+        self.boundary_color = Color(201, 201, 201)
         # thickness values used for the grid lines and the boundaries
         self.line_thickness = 0.008
         self.box_thickness = 1.5 * self.line_thickness
@@ -67,7 +78,7 @@ class GameGrid:
                     if current_tile.number == bottom_current_tile.number:
                         score = self.tile_matrix[row][col].number + self.tile_matrix[row - 1][col].number
 
-                        bottom_current_tile.tile_value_for_merge(current_tile.number+bottom_current_tile.number)
+                        bottom_current_tile.tile_value_for_merge(current_tile.number + bottom_current_tile.number)
                         self.tile_matrix[row][col] = None
                         self.total_score += score
                         stddraw.show(50)
@@ -81,7 +92,6 @@ class GameGrid:
 
     def drop_labeling_tiles(self, array_with_label, count_of_label):
 
-
         # count of label in içinde gezer
         for x in range(1, len(count_of_label)):
 
@@ -90,24 +100,20 @@ class GameGrid:
                 for col in range(len(array_with_label[0])):
 
                     if array_with_label[row][col] == count_of_label[x]:
-
-                            a = self.tile_matrix[row][col]
-                            self.tile_matrix[row - 1][col] = a
-                            self.tile_matrix[row][col] = None
-
-
-
+                        a = self.tile_matrix[row][col]
+                        self.tile_matrix[row - 1][col] = a
+                        self.tile_matrix[row][col] = None
 
     def print_score(self):
 
-        stddraw.setPenColor(Color(201,201,201))
+        stddraw.setPenColor(Color(201, 201, 201))
         stddraw.setPenRadius(0.01)
         stddraw.rectangle(12, 17.3, 4.2, 2)
         stddraw.setPenColor(stddraw.BLACK)
 
-        stddraw.setFontSize(17)
-        stddraw.boldText(14, 18.9, "SCORE")
-        stddraw.boldText(14, 18, str(self.total_score))
+        stddraw.setFontSize(21)
+        stddraw.boldText(14.1, 18.8, "SCORE")
+        stddraw.boldText(14.1, 18, str(self.total_score))
 
     # Method used for displa ying the game grid
     def display(self):
@@ -125,6 +131,7 @@ class GameGrid:
         self.print_score()
         # draw next tetromino
         show_next_tetromino(self.tetromino_list)
+        show_options()
 
         self.merge()
 
@@ -352,7 +359,7 @@ class GameGrid:
 
         score = 0
         # satır sütun dolaşır
-        for row in range(1, self.grid_height):
+        for row in range(self.grid_height):
             full_cell = 0
             for col in range(self.grid_width):
 
@@ -449,5 +456,3 @@ class GameGrid:
         print("New Image: " + str(label_array))
         print("Equivalency List: " + str(equivalency_list))
         return label_array, equivalency_list
-
-
