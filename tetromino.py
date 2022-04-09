@@ -16,52 +16,53 @@ class Tetromino:
     def __init__(self, type):
         # set the shape of the tetromino based on the given type
         self.type = type
+        self.n = None
         # determine the occupied (non-empty) tiles in the tile matrix
         occupied_tiles = []
         if type == 'I':
-            n = 4  # n = number of rows = number of columns in the tile matrix
+            self.n = 4  # n = number of rows = number of columns in the tile matrix
             # shape of the tetromino I in its initial orientation
             occupied_tiles.append((1, 0))  # (column_index, row_index)
             occupied_tiles.append((1, 1))
             occupied_tiles.append((1, 2))
             occupied_tiles.append((1, 3))
         elif type == 'O':
-            n = 2  # n = number of rows = number of columns in the tile matrix
+            self.n = 2  # n = number of rows = number of columns in the tile matrix
             # shape of the tetromino O in its initial orientation
             occupied_tiles.append((0, 0))  # (column_index, row_index)
             occupied_tiles.append((1, 0))
             occupied_tiles.append((0, 1))
             occupied_tiles.append((1, 1))
         elif type == 'Z':
-            n = 3  # n = number of rows = number of columns in the tile matrix
+            self.n = 3  # n = number of rows = number of columns in the tile matrix
             # shape of the tetromino Z in its initial orientation
             occupied_tiles.append((0, 0))  # (column_index, row_index)
             occupied_tiles.append((1, 0))
             occupied_tiles.append((1, 1))
             occupied_tiles.append((2, 1))
         elif type == 'S':
-            n = 3  # n = number of rows = number of columns in the tile matrix
+            self.n = 3  # n = number of rows = number of columns in the tile matrix
             # shape of the tetromino S in its initial orientation
             occupied_tiles.append((2, 1))  # (column_index, row_index)
             occupied_tiles.append((1, 1))
             occupied_tiles.append((1, 2))
             occupied_tiles.append((0, 2))
         elif type == 'T':
-            n = 3  # n = number of rows = number of columns in the tile matrix
+            self.n = 3  # n = number of rows = number of columns in the tile matrix
             # shape of the tetromino T in its initial orientation
             occupied_tiles.append((0, 1))  # (column_index, row_index)
             occupied_tiles.append((1, 1))
             occupied_tiles.append((2, 1))
             occupied_tiles.append((1, 2))
         elif type == 'L':
-            n = 3  # n = number of rows = number of columns in the tile matrix
+            self.n = 3  # n = number of rows = number of columns in the tile matrix
             # shape of the tetromino L in its initial orientation
             occupied_tiles.append((1, 0))  # (column_index, row_index)
             occupied_tiles.append((1, 1))
             occupied_tiles.append((1, 2))
             occupied_tiles.append((2, 2))
         elif type == 'J':
-            n = 3  # n = number of rows = number of columns in the tile matrix
+            self.n = 3  # n = number of rows = number of columns in the tile matrix
             # shape of the tetromino J in its initial orientation
             occupied_tiles.append((1, 0))  # (column_index, row_index)
             occupied_tiles.append((1, 1))
@@ -69,7 +70,7 @@ class Tetromino:
             occupied_tiles.append((0, 2))
 
         # create a matrix of numbered tiles based on the shape of the tetromino
-        self.tile_matrix = np.full((n, n), None)
+        self.tile_matrix = np.full((self.n, self.n), None)
         # create the four tiles (minos) of the tetromino and place these tiles
         # into the tile matrix
         for i in range(len(occupied_tiles)):
@@ -81,7 +82,7 @@ class Tetromino:
         # tile matrix) with a random horizontal position above the game grid
         self.bottom_left_cell = Point()
         self.bottom_left_cell.y = self.grid_height - 1
-        self.bottom_left_cell.x = random.randint(0, self.grid_width - n)
+        self.bottom_left_cell.x = random.randint(0, self.grid_width - self.n)
 
     # Method that returns the position of the cell in the tile matrix specified
     # by the given row and column indexes
@@ -231,8 +232,9 @@ class Tetromino:
 
     def rotate_tertromino(self, game_grid, clock_direction=True):
 
-        if self.can_be_rotated():
-            pass
+        # if self.can_be_rotated(game_grid):
+        #     print("Yes, it can rotate")
+        self.can_be_rotated(game_grid)
 
         if clock_direction:
 
@@ -253,5 +255,29 @@ class Tetromino:
             flip_matrix = np.flipud(transpose_matrix)
             self.tile_matrix = flip_matrix
 
-    def can_be_rotated(self):
-        pass
+    def can_be_rotated(self, game_grid):
+
+        counter = 0
+
+        for row in range(game_grid.current_tetromino.n):
+
+            for col in range(game_grid.current_tetromino.n):
+
+                current_tile_position = self.get_cell_position(row, col)
+                print(current_tile_position)
+                print(current_tile_position.x)
+                print(current_tile_position.y)
+
+                if game_grid.is_occupied(current_tile_position.x, current_tile_position.y):
+                    counter += 1
+                    print("full tile")
+                # if counter > 2:
+                #     print("Dont rotate")
+                # if counter < 2:
+                #     print("Rotate")
+                print("---------")
+
+
+
+
+
