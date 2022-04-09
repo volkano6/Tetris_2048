@@ -232,47 +232,52 @@ class Tetromino:
 
     def rotate_tertromino(self, game_grid, clock_direction=True):
 
-        if self.can_be_rotated(game_grid):
-            print("Yes, it can rotate")
+        # if self.can_be_rotated(game_grid):
+        #     print("Yes, it can rotate")
+        self.can_be_rotated(game_grid)
 
-            if clock_direction:
+        if clock_direction:
 
-                # Function flips the entries in each column in the up or down direction.
-                flip_matrix = np.flipud(self.tile_matrix)
-                # The numpy.transpose() function changes the row elements into column elements
-                # and the column elements into row elements.
-                transpose_matrix = np.transpose(flip_matrix)
-                self.tile_matrix = transpose_matrix
+            # Function flips the entries in each column in the up or down direction.
+            flip_matrix = np.flipud(self.tile_matrix)
+            # The numpy.transpose() function changes the row elements into column elements
+            # and the column elements into row elements.
+            transpose_matrix = np.transpose(flip_matrix)
+            self.tile_matrix = transpose_matrix
 
 
-            else:
+        else:
 
-                # The numpy.transpose() function changes the row elements into column elements
-                # and the column elements into row elements.
-                transpose_matrix = np.transpose(self.tile_matrix)
-                # Function flips the entries in each column in the up or down direction.
-                flip_matrix = np.flipud(transpose_matrix)
-                self.tile_matrix = flip_matrix
-        print("No, ıt can't")
+            # The numpy.transpose() function changes the row elements into column elements
+            # and the column elements into row elements.
+            transpose_matrix = np.transpose(self.tile_matrix)
+            # Function flips the entries in each column in the up or down direction.
+            flip_matrix = np.flipud(transpose_matrix)
+            self.tile_matrix = flip_matrix
 
     def can_be_rotated(self, game_grid):
 
         counter = 0
+
         for row in range(game_grid.current_tetromino.n):
+
             for col in range(game_grid.current_tetromino.n):
 
                 current_tile_position = self.get_cell_position(row, col)
-                # print(current_tile_position.y)
+                print(current_tile_position)
+                print(current_tile_position.x)
+                print(current_tile_position.y)
 
-                if current_tile_position.x < 0 or current_tile_position.x >= game_grid.grid_width or current_tile_position.y < 0 or current_tile_position.y >= game_grid.grid_height:
+                if game_grid.is_occupied(current_tile_position.x, current_tile_position.y):
+                    counter += 1
+                    print("full tile")
+                # if counter > 2:
+                #     print("Dont rotate")
+                # if counter < 2:
+                #     print("Rotate")
+                print("---------")
 
-                    return False
 
-                else:
-                    if game_grid.tile_matrix[current_tile_position.y][current_tile_position.x] is not None:
-                        counter = counter + 1
 
-        if counter > 0:
-            return False
 
-        return True
+

@@ -35,7 +35,7 @@ class Tile:
             # set the number on the tile
             self.number = 4
             # set the colors of the tile
-            self.background_color = Color(231, 214, 162)  # background (tile) color
+            self.background_color = Color(241, 224, 172)  # background (tile) color
             self.foreground_color = Color(0, 0, 0)  # foreground (number) color
             self.box_color = Color(221,221,221)  # box (boundary) color
 
@@ -61,7 +61,7 @@ class Tile:
             # set the number on the tile
             self.number = 16
             # set the colors of the tile
-            self.background_color = Color(116, 149, 154)  # background (tile) color
+            self.background_color = Color(116,149,154)  # background (tile) color
             self.foreground_color = Color(255, 255, 255)  # foreground (number) color
             self.box_color = Color(221,221,221)  # box (boundary) color
 
@@ -142,6 +142,7 @@ class Tile:
             self.box_color = Color(145, 196, 131)  # box (boundary) color
 
         stddraw.show(300)
+
 
 
 
