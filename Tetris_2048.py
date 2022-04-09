@@ -14,11 +14,11 @@ def start():
     # set the dimensions  of the game grid
     grid_h, grid_w = 20, 12
     # set the size of the drawing canvas
-    canvas_h, canvas_w = 40 * grid_h, 50 * grid_w
+    canvas_h, canvas_w = 50 * grid_h, 60 * grid_w
     stddraw.setCanvasSize(canvas_w, canvas_h)
     # set the scale of the coordinate system
-    stddraw.setXscale(-0.5, grid_w + 4.6)
-    stddraw.setYscale(-0.5, grid_h - 0.5)
+    stddraw.setXscale(-0.6, grid_w + 4.7)
+    stddraw.setYscale(-0.6, grid_h - 0.4)
 
     # set the dimension values stored and used in the Tetromino class
     Tetromino.grid_height = grid_h
@@ -44,9 +44,10 @@ def start():
     tetromino_list.pop(0)
     tetromino_list.append(create_tetromino(grid_h, grid_w))
 
+
     # display a simple menu before opening    game
     # by using the display_game_menu function defined below
-    display_game_menu(grid_h, grid_w + 3)
+    display_game_menu(grid_h, grid_w+5)
 
     clock_direction = True
     # the main game loop (keyboard interaction for moving the tetromino)
@@ -79,8 +80,6 @@ def start():
                 # move the active tetromino's rotate change
                 grid.current_tetromino.rotate_tertromino(grid, clock_direction)
             # clear the queue of the pressed keys for a smoother interaction
-            elif key_typed == "escape":
-                print("escape")
             elif key_typed == "space":
                 # move the active tetromino drop
                 # (drop: causes the tetromino to fall to the deepest place )
@@ -117,14 +116,12 @@ def start():
 
     # print a message on the console when the game is over
     print("Game over")
-    display_game_menu(grid_h, grid_w)
-
-
+    display_game_over(grid_h,grid_w)
 # Function for displaying a simple menu before starting the game
 def display_game_menu(grid_height, grid_width):
     # colors used for the menu
-    background_color = Color(42, 69, 99)
-    button_color = Color(25, 255, 228)
+    background_color = Color(221,221,221)
+    button_color = Color(241, 224, 172)
     text_color = Color(31, 160, 239)
     # clear the background canvas to background_color
     stddraw.clear(background_color)
@@ -133,13 +130,13 @@ def display_game_menu(grid_height, grid_width):
     # path of the image file
     img_file = current_dir + "/images/menu_image.png"
     # center coordinates to display the image
-    img_center_x, img_center_y = (grid_width + 0.5) / 2, grid_height - 8
+    img_center_x, img_center_y = (grid_width - 1) / 2, grid_height - 7
     # image is represented using the Picture class
     image_to_display = Picture(img_file)
     # display the image
     stddraw.picture(image_to_display, img_center_x, img_center_y)
     # dimensions of the start game button
-    button_w, button_h = grid_width - 7, 1.7
+    button_w, button_h = grid_width - 5, 1.7
     # coordinates of the bottom left corner of the start game button
     button_blc_x, button_blc_y = img_center_x - button_w / 2, 4.1
     # display the start game button as a filled rectangle
@@ -164,6 +161,49 @@ def display_game_menu(grid_height, grid_width):
             if mouse_x >= button_blc_x and mouse_x <= button_blc_x + button_w:
                 if mouse_y >= button_blc_y and mouse_y <= button_blc_y + button_h:
                     break  # break the loop to end the method and start the game
+
+def display_game_over(grid_height, grid_width):
+    background_color = Color(221, 221, 221)
+    button_color = Color(241, 224, 172)
+    text_color = Color(31, 160, 239)
+    # clear the background canvas to background_color
+    stddraw.clear(background_color)
+    # get the directory in which this python code file is placed
+    current_dir = os.path.dirname(os.path.realpath(__file__))
+    # path of the image file
+    img_file = current_dir + "/images/game-over-monster.png"
+    # center coordinates to display the image
+    img_center_x, img_center_y = (grid_width - 1) / 2, grid_height - 7
+    # image is represented using the Picture class
+    image_to_display = Picture(img_file)
+    # display the image
+    stddraw.picture(image_to_display, img_center_x, img_center_y)
+    # dimensions of the start game button
+    button_w, button_h = grid_width - 5, 1.7
+    # coordinates of the bottom left corner of the start game button
+    button_blc_x, button_blc_y = img_center_x - button_w / 2, 4.1
+    # display the start game button as a filled rectangle
+    stddraw.setPenColor(button_color)
+    stddraw.filledRectangle(button_blc_x, button_blc_y, button_w, button_h)
+    # display the text on the start game button
+    stddraw.setFontFamily("Arial")
+    stddraw.setFontSize(25)
+    stddraw.setPenColor(text_color)
+    text_to_display = "Game over"
+    stddraw.text(img_center_x, 5, text_to_display)
+    # menu interaction loop
+    while True:
+        # display the menu and wait for a short time (50 ms)
+        stddraw.show(50)
+        # check if the mouse has been left-clicked on the button
+        if stddraw.mousePressed():
+            # get the x and y coordinates of the location at which the mouse has
+            # most recently been left-clicked
+            mouse_x, mouse_y = stddraw.mouseX(), stddraw.mouseY()
+            # check if these coordinates are inside the button
+            if mouse_x >= button_blc_x and mouse_x <= button_blc_x + button_w:
+                if mouse_y >= button_blc_y and mouse_y <= button_blc_y + button_h:
+                    break  # break the loop to end
 
 # Function for creating random shaped tetrominoes to enter the game grid
 def create_tetromino(grid_height, grid_width):
