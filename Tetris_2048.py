@@ -197,15 +197,15 @@ def display_game_over(grid_height, grid_width,arr):
     # path of the image file
     img_file = current_dir + "/images/game_over4.png"
     # center coordinates to display the image
-    img_center_x, img_center_y = (grid_width+3.6) / 2, grid_height - 6
+    img_center_x, img_center_y = (grid_width+3.7) / 2, grid_height - 6
     # image is represented using the Picture class
     image_to_display = Picture(img_file)
     # display the image
     stddraw.picture(image_to_display, img_center_x, img_center_y)
     # dimensions of the start game button
-    button_w, button_h = grid_width - 4, 1.7
+    button_w, button_h = grid_width - 3.8, 1.5
     # coordinate display_game_overs of the bottom left corner of the start game button
-    button_blc_x, button_blc_y = img_center_x - button_w  / 2, 5
+    button_blc_x, button_blc_y = img_center_x - button_w / 2, 5
     # display the start game button as a filled rectangle
     stddraw.setPenColor(button_color)
     stddraw.filledRectangle(button_blc_x, button_blc_y, button_w, button_h)
