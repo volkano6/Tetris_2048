@@ -16,12 +16,12 @@ def show_next_tetromino(arr):
     stddraw.boldText(14.1, 9, "NEXT TETROMINOS")
 
     stddraw.setPenRadius(0.01)
-    stddraw.setPenColor(Color(137, 127, 110))
+    stddraw.setPenColor(Color(201,201,201))
     stddraw.rectangle(12, 5.4, 4.2, 3.2)
     arr[0].draw_next_tetromino(12.6, 6)
 
     stddraw.setPenRadius(0.01)
-    stddraw.setPenColor(Color(137, 127, 110))
+    stddraw.setPenColor(Color(201,201,201))
     stddraw.rectangle(12, 1.4, 4.2, 3.2)
 
     arr[1].draw_next_tetromino(12.6, 2)
@@ -44,13 +44,13 @@ class GameGrid:
         # the game_over flag shows whether the game is over or not
         self.game_over = False
         # set the color used for the empty grid cells
-        self.empty_cell_color = Color(204, 192, 179)
+        self.empty_cell_color = Color(238,238,238)
         # set the colors used for the grid lines and the grid boundaries
-        self.line_color = Color(187, 173, 160)
-        self.boundary_color = Color(157, 143, 130)
+        self.line_color = Color(221,221,221)
+        self.boundary_color = Color(201,201,201)
         # thickness values used for the grid lines and the boundaries
         self.line_thickness = 0.008
-        self.box_thickness = 1 * self.line_thickness
+        self.box_thickness = 1.5 * self.line_thickness
 
     def merge(self):
         score = 0
@@ -67,7 +67,7 @@ class GameGrid:
                     if current_tile.number == bottom_current_tile.number:
                         score = self.tile_matrix[row][col].number + self.tile_matrix[row - 1][col].number
 
-                        bottom_current_tile.tile_value_for_merge(current_tile.number + bottom_current_tile.number)
+                        bottom_current_tile.tile_value_for_merge(current_tile.number+bottom_current_tile.number)
                         self.tile_matrix[row][col] = None
                         self.total_score += score
                         stddraw.show(50)
@@ -100,13 +100,13 @@ class GameGrid:
 
     def print_score(self):
 
-        stddraw.setPenColor(Color(137, 127, 110))
+        stddraw.setPenColor(Color(201,201,201))
         stddraw.setPenRadius(0.01)
         stddraw.rectangle(12, 17.3, 4.2, 2)
         stddraw.setPenColor(stddraw.BLACK)
 
         stddraw.setFontSize(17)
-        stddraw.boldText(14, 19, "SCORE")
+        stddraw.boldText(14, 18.9, "SCORE")
         stddraw.boldText(14, 18, str(self.total_score))
 
     # Method used for displa ying the game grid
@@ -163,8 +163,8 @@ class GameGrid:
         # for the bounding box as its lines lie on the boundaries of the canvas)
         stddraw.setPenRadius(self.box_thickness)
         # the coordinates of the bottom left corner of the game grid
-        pos_x, pos_y = -0.5, -0.5
-        stddraw.rectangle(pos_x, pos_y, self.grid_width + 0.03, self.grid_height)
+        pos_x, pos_y = -0.5, -0.52
+        stddraw.rectangle(pos_x, pos_y, self.grid_width + 0.04, self.grid_height)
         stddraw.setPenRadius()  # reset the pen radius to its default value
 
     # Method used for checking whether the grid cell with given row and column
