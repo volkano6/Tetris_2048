@@ -48,7 +48,8 @@ class GameGrid:
         self.tile_matrix = np.full((grid_h, grid_w), None)
         # score
         self.total_score = 0
-
+        self.delay_game = 270
+        self.delay_merge_and_clear_row = 50
         # create the te1tromino that is currently being moved on the game grid
         self.current_tetromino = None
         self.tetromino_list = None
@@ -76,12 +77,14 @@ class GameGrid:
 
                     # eğer numberları aynı ise merge işlemini gerçekleştir.
                     if current_tile.number == bottom_current_tile.number:
-                        score = self.tile_matrix[row][col].number + self.tile_matrix[row - 1][col].number
 
-                        bottom_current_tile.tile_value_for_merge(current_tile.number + bottom_current_tile.number)
+                        sum = current_tile.number + bottom_current_tile.number
+                        score = self.tile_matrix[row][col].number + self.tile_matrix[row - 1][col].number
+                        stddraw.show(self.delay_merge_and_clear_row)
+                        bottom_current_tile.tile_value_for_merge(sum)
                         self.tile_matrix[row][col] = None
                         self.total_score += score
-                        stddraw.show(50)
+
                         # method is droped same colm with merging
                         self.after_merge_col_drop(row, col)
 
@@ -140,7 +143,7 @@ class GameGrid:
         # draw a box around the game grid
         self.draw_boundaries()
         # show the resulting drawing with a pause duration = 250 ms
-        stddraw.show(250)
+        stddraw.show(self.delay_game)
 
     # Method for drawing the cells and the lines of the game grid
     def draw_grid(self):
@@ -233,7 +236,7 @@ class GameGrid:
                 a = self.tile_matrix[row + current_tile][col]
                 self.tile_matrix[row + current_tile - 1][col] = a
                 self.tile_matrix[row + current_tile][col] = None
-                stddraw.show(50)
+                stddraw.show(self.delay_merge_and_clear_row)
 
     def tile_array_to_binary(self):
         # get the shape of the tile matrix
@@ -359,7 +362,7 @@ class GameGrid:
 
         score = 0
         # satır sütun dolaşır
-        for row in range(self.grid_height):
+        for row in range(1, self.grid_height):
             full_cell = 0
             for col in range(self.grid_width):
 
@@ -372,6 +375,7 @@ class GameGrid:
                 if full_cell >= self.grid_width:
                     for row2 in range(self.grid_width):
                         self.tile_matrix[row][row2] = None
+                        stddraw.show(self.delay_merge_and_clear_row )
                     self.total_score += score
                     self.drop_tiles_tetris(row)
 

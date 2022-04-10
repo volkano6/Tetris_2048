@@ -20,7 +20,6 @@ class Tile:
         self.position.x = None
         self.position.y = None
 
-
         random_list = [2, 4]
         x = random.choice(random_list)
         if x == 2:
@@ -29,7 +28,7 @@ class Tile:
             # set the colors of the tile
             self.background_color = Color(255, 244, 192)  # background (tile) color
             self.foreground_color = Color(0, 0, 0)  # foreground (number) color
-            self.box_color = Color(221,221,221)  # box (boundary) color
+            self.box_color = Color(221, 221, 221)  # box (boundary) color
 
         else:
             # set the number on the tile
@@ -37,7 +36,7 @@ class Tile:
             # set the colors of the tile
             self.background_color = Color(241, 224, 172)  # background (tile) color
             self.foreground_color = Color(0, 0, 0)  # foreground (number) color
-            self.box_color = Color(221,221,221)  # box (boundary) color
+            self.box_color = Color(221, 221, 221)  # box (boundary) color
 
     def tile_value_for_merge(self, value):
 
@@ -47,7 +46,7 @@ class Tile:
             # set the colors of the tile
             self.background_color = Color(241, 224, 172)  # background (tile) color
             self.foreground_color = Color(0, 0, 0)  # foreground (number) color
-            self.box_color = Color(221,221,221)  # box (boundary) color
+            self.box_color = Color(221, 221, 221)  # box (boundary) color
 
         elif value == 8:
             # set the number on the tile
@@ -55,15 +54,15 @@ class Tile:
             # set the colors of the tile
             self.background_color = Color(152, 180, 170)  # background (tile) color
             self.foreground_color = Color(255, 255, 255)  # foreground (number) color
-            self.box_color = Color(221,221,221)  # box (boundary) color
+            self.box_color = Color(221, 221, 221)  # box (boundary) color
 
         elif value == 16:
             # set the number on the tile
             self.number = 16
             # set the colors of the tile
-            self.background_color = Color(116,149,154)  # background (tile) color
+            self.background_color = Color(116, 149, 154)  # background (tile) color
             self.foreground_color = Color(255, 255, 255)  # foreground (number) color
-            self.box_color = Color(221,221,221)  # box (boundary) color
+            self.box_color = Color(221, 221, 221)  # box (boundary) color
 
         elif value == 32:
             # set the number on the tile
@@ -71,7 +70,7 @@ class Tile:
             # set the colors of the tile
             self.background_color = Color(73, 83, 113)  # background (tile) color
             self.foreground_color = Color(255, 255, 255)  # foreground (number) color
-            self.box_color = Color(221,221,221)  # box (boundary) color
+            self.box_color = Color(221, 221, 221)  # box (boundary) color
 
         elif value == 64:
             # set the number on the tile
@@ -143,9 +142,6 @@ class Tile:
 
         stddraw.show(300)
 
-
-
-
     def move(self, dx, dy):
         self.position.translate(dx, dy)
 
@@ -164,3 +160,11 @@ class Tile:
         stddraw.setFontFamily(Tile.font_family)
         stddraw.setFontSize(Tile.font_size)
         stddraw.boldText(position.x, position.y, str(self.number))
+
+    def highlight(self):
+        # set the number on the tile
+        self.number = 0
+        # set the colors of the tile
+        self.background_color = Color(0, 0, 0)  # background (tile) color
+        self.foreground_color = Color(0, 0, 0)  # foreground (number) color
+        self.box_color = Color(0, 0, 0)  # box (boundary) color
