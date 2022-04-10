@@ -140,6 +140,7 @@ def start(grid):
     # print a message on the console when the game is over
     display_game_over(grid, score_array)
     print("Game over")
+    print("-----------")
 
 
 def settings_game_menu(game_grid):
