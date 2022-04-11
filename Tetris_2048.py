@@ -16,7 +16,7 @@ def create_canvas():
     # set the dimensions  of the game grid
     grid_h, grid_w = 20, 12
     # set the size of the drawing canvas
-    canvas_h, canvas_w = 45 * grid_h, 55 * grid_w
+    canvas_h, canvas_w = 43 * grid_h, 55 * grid_w
     stddraw.setCanvasSize(canvas_w, canvas_h)
     # set the scale of the coordinate system
     stddraw.setXscale(-0.6, grid_w + 4.7)
@@ -34,9 +34,10 @@ def create_canvas():
     # by using the display_game_menu function defined below
     display_game_menu(grid)
 
+    # The part where game flow
     start(grid)
 
-
+# The part where game flow
 def start(grid):
     # created list ("tetromino_list") for tetrominoes
     # When the "current_tetromino" is done None, new tetromino takes in "tetromino_list"
@@ -55,11 +56,13 @@ def start(grid):
     tetromino_list.pop(0)
     tetromino_list.append(create_tetromino(grid.grid_height, grid.grid_width))
 
+    # When the game is finished, we can store total score from this arr.
     score_array = [0]
 
+    # setting for rotate
     clock_direction = True
-    # the main game loop (keyboard interaction for moving the tetromino)
 
+    # the main game loop (keyboard interaction for moving the tetromino)
     while True:
 
         # check user interactions via the keyboard
@@ -79,7 +82,7 @@ def start(grid):
                 # (soft drop: causes the tetromino to fall down faster)
                 current_tetromino.move(key_typed, grid)
             elif key_typed == "left ctrl":
-                # move the active tetromino down to deepest
+                # change the active tetromino rotate direction
                 if clock_direction:
                     clock_direction = False
                 else:
@@ -92,14 +95,14 @@ def start(grid):
                 # move the active tetromino drop
                 # (drop: causes the tetromino to fall to the deepest place )
                 grid.piece_drop()
-            # if user typed 'r', the game restart
+            # if user typed 'p', the game will pause
             if key_typed == 'p':
                 display_pause(grid.grid_height, grid.grid_width)
-
+            # if user typed 'p', the game will restart
             if key_typed == 'r':
                 new_grid = GameGrid(grid.grid_height, grid.grid_width)
                 start(new_grid)
-
+            # if user typed 'e', the game exit
             if key_typed == 'e':
                 new_grid = GameGrid(grid.grid_height, grid.grid_width)
                 display_game_over(new_grid, score_array)
@@ -140,9 +143,8 @@ def start(grid):
     # print a message on the console when the game is over
     display_game_over(grid, score_array)
     print("Game over")
-    print("-----------")
 
-
+# Settings menu
 def settings_game_menu(game_grid):
     width = game_grid.grid_width + 5
     height = game_grid.grid_height
@@ -243,7 +245,6 @@ def settings_game_menu(game_grid):
                     display_game_menu(game_grid)
                     break
 
-
 # Function for displaying a simple menu before starting the game
 def display_game_menu(game_grid):
     width = game_grid.grid_width + 5
@@ -309,7 +310,6 @@ def display_game_menu(game_grid):
             if mouse_x >= settings_button_blc_x and mouse_x <= settings_button_blc_x + settings_button_w:
                 if mouse_y >= settings_button_blc_y and mouse_y <= settings_button_blc_y + settings_button_h:
                     settings_game_menu(game_grid)
-
 
 def display_game_over(game_grid, arr):
 
@@ -385,11 +385,10 @@ def display_game_over(game_grid, arr):
                 if mouse_y >= settings_button_blc_y and mouse_y <= settings_button_blc_y + settings_button_h:
                     settings_game_menu(new_grid)
 
-
-
-
 def display_pause(grid_height, grid_width):
+
     grid = GameGrid(grid_height, grid_width)
+
     button_color = Color(201, 201, 201)
     text_color = Color(255, 255, 255)
     # clear the background canvas to background_color

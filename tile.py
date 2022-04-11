@@ -160,11 +160,3 @@ class Tile:
         stddraw.setFontFamily(Tile.font_family)
         stddraw.setFontSize(Tile.font_size)
         stddraw.boldText(position.x, position.y, str(self.number))
-
-    def highlight(self):
-        # set the number on the tile
-        self.number = 0
-        # set the colors of the tile
-        self.background_color = Color(0, 0, 0)  # background (tile) color
-        self.foreground_color = Color(0, 0, 0)  # foreground (number) color
-        self.box_color = Color(0, 0, 0)  # box (boundary) color

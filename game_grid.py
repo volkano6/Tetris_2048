@@ -28,7 +28,7 @@ def show_next_tetromino(arr):
 
 
 def show_options():
-    stddraw.setFontSize(17)
+    stddraw.setFontSize(16)
     stddraw.boldText(14.1, 15, "Press 'R' to Restart")
     stddraw.boldText(14.1, 14, "Press 'E' to Exit")
     stddraw.boldText(14.1, 13, "Press 'P' to Pause")
@@ -48,8 +48,8 @@ class GameGrid:
         self.tile_matrix = np.full((grid_h, grid_w), None)
         # score
         self.total_score = 0
-        self.delay_game = 270
-        self.delay_merge_and_clear_row = 50
+        self.delay_game = 220
+        self.delay_merge_and_clear_row = 20
         # create the te1tromino that is currently being moved on the game grid
         self.current_tetromino = None
         self.tetromino_list = None
@@ -92,20 +92,6 @@ class GameGrid:
                     label_arr, equivalency_list = self.label_array(self.tile_array_to_binary())
 
                     self.drop_labeling_tiles(label_arr, equivalency_list)
-
-    def drop_labeling_tiles(self, array_with_label, count_of_label):
-
-        # count of label in içinde gezer
-        for x in range(1, len(count_of_label)):
-
-            # matrikste gezer
-            for row in range(1, len(array_with_label)):
-                for col in range(len(array_with_label[0])):
-
-                    if array_with_label[row][col] == count_of_label[x]:
-                        a = self.tile_matrix[row][col]
-                        self.tile_matrix[row - 1][col] = a
-                        self.tile_matrix[row][col] = None
 
     def print_score(self):
 
@@ -352,6 +338,20 @@ class GameGrid:
                 index = temp
             else:
                 break
+
+    def drop_labeling_tiles(self, array_with_label, count_of_label):
+
+        # count of label in içinde gezer
+        for x in range(1, len(count_of_label)):
+
+            # matrikste gezer
+            for row in range(1, len(array_with_label)):
+                for col in range(len(array_with_label[0])):
+
+                    if array_with_label[row][col] == count_of_label[x]:
+                        a = self.tile_matrix[row][col]
+                        self.tile_matrix[row - 1][col] = a
+                        self.tile_matrix[row][col] = None
 
     def piece_drop(self):
         while self.current_tetromino.can_be_moved("down", self):
