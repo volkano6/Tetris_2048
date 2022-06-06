@@ -32,21 +32,21 @@
   <h3> EXAMPLES OF OUTPUT </h3>
 
   <div>Game Menu</div>
-          <div> <img src="images2\GameMenu.png" alt="Game Menu" style="width:200px;"></div>
+          <div> <img src="images2\GameMenu.png" alt="Game Menu" style="width:400px;"></div>
   <div>Game Settings Menu</div>
-          <div> <img src="images2\Game Settings Menu.png" alt="Game Settings Menu" style="width:200px;"></div>
+          <div> <img src="images2\Game Settings Menu.png" alt="Game Settings Menu" style="width:400px;"></div>
   <div>Game Grid</div>
-          <div> <img src="images2\Game Grid.png" alt="Game Grid" style="width:200px;"></div>
+          <div> <img src="images2\Game Grid.png" alt="Game Grid" style="width:400px;"></div>
   <div>Pause Menu</div>
-          <div> <img src="images2\Pause Menu.png" alt="Pause Menu" style="width:200px;"></div>
+          <div> <img src="images2\Pause Menu.png" alt="Pause Menu" style="width:400px;"></div>
   <div>Game Over Menu</div>
-          <div> <img src="images2\Game Over Menu.png" alt="Game Over Menu" style="width:200px;"></div>
+          <div> <img src="images2\Game Over Menu.png" alt="Game Over Menu" style="width:400px;"></div>
   <div>Clearing a full row:</div>
-          <div> <img src="images2\Clearing Full Row.png" alt="Clearing a full row" style="width:500px;"></div>
+          <div> <img src="images2\Clearing Full Row.png" alt="Clearing a full row" style="width:800px;"></div>
   <div>Rotation of a tetromino:</div>
-          <div> <img src="images2\Rotation of a tetromino.png" alt="Rotation of a tetromino" style="width:500px;"</div>
+          <div> <img src="images2\Rotation of a tetromino.png" alt="Rotation of a tetromino" style="width:800px;"</div>
   <div>Merging example:</div>
-          <div> <img src="images2\Merge.png" alt="Merging example:" style="width:500px;"></div>
+          <div> <img src="images2\Merge.png" alt="Merging example:" style="width:800px;"></div>
   
 </body>
 
